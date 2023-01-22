@@ -1,0 +1,89 @@
+import { LetterPosition } from "../types/interfaces";
+import { useHandleLetters } from './useHandleLetters';
+
+export const useDetectWord = (lettersPositions: LetterPosition[], moveIteration: number) => {
+
+    const { checkField } = useHandleLetters();
+
+    const lettersThisMove = lettersPositions.filter((letter: LetterPosition) => letter.moveIteration === moveIteration);
+
+    if(lettersThisMove.length < 1)
+        return [];
+
+
+    const isPortrait = lettersThisMove[0].row !== lettersThisMove[1]?.row;
+
+    const matchedWordsLandscape: LetterPosition[][] = [];
+    const matchedWordsPortrait: LetterPosition[][] = [];
+    
+    lettersThisMove.forEach(letter => {
+
+        const matchedLettersLandscape: LetterPosition[] = [];
+        const matchedLettersPortrait: LetterPosition[] = [];
+
+        const { column, row } = letter;
+    
+        try{
+            Array(20).fill('').forEach((item, index) => {
+                const field = checkField(column+index+1, row);
+                if(field)
+                    matchedLettersLandscape.push(field);
+                else
+                    throw 'exit';
+            })
+        } catch {}
+    
+        try{
+            Array(20).fill('').forEach((item, index) => {
+                const field = checkField(column-index-1, row);
+                if(field)
+                    matchedLettersLandscape.push(field);
+                else
+                    throw 'exit';
+            })
+        } catch {}
+    
+        try{
+            Array(20).fill('').forEach((item, index) => {
+                const field = checkField(column, row+index+1);
+                if(field)
+                    matchedLettersPortrait.push(field);
+                else
+                    throw 'exit';
+            })
+        } catch {}
+    
+        try{
+            Array(20).fill('').forEach((item, index) => {
+                const field = checkField(column, row-index-1);
+                if(field)
+                    matchedLettersPortrait.push(field);
+                else
+                    throw 'exit';
+            })
+        } catch {}
+    
+    
+        matchedLettersLandscape.push(checkField(column, row));
+        matchedLettersPortrait.push(checkField(column, row));
+    
+        matchedLettersLandscape.sort((a, b) => a.column - b.column);
+        matchedLettersPortrait.sort((a, b) => a.row - b.row);
+
+        if(matchedLettersLandscape.length > 1) matchedWordsLandscape.push(matchedLettersLandscape);
+        if(matchedLettersPortrait.length > 1) matchedWordsPortrait.push(matchedLettersPortrait);
+
+    })
+
+    if(isPortrait){
+        return [
+            ...matchedWordsPortrait.slice(0, 1),
+            ...matchedWordsLandscape
+        ];
+    } else {
+        return [
+            ...matchedWordsPortrait,
+            ...matchedWordsLandscape.slice(0, 1)
+        ];
+    }
+}
