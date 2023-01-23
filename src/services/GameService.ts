@@ -32,7 +32,7 @@ export default class GameService{
     }
 
     static async fetchGame(gamePublicId: string){
-        const response = (await axios.get(`${this.enviroment.getEndpoint}/games/${gamePublicId}.json`)).data;
+        const response = (await axios.get(`${this.enviroment.getEndpoint}/games/${gamePublicId}.json?ts=${Math.random()}`)).data;
 
         return JSON.parse(decrypt(response));
     }

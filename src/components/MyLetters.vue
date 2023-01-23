@@ -2,12 +2,12 @@
 import Letter from '../components/Letter.vue';
 import Draggable from 'vuedraggable';
 import { usePlayerStore } from '../store/player';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { PickedLetter } from '../types/interfaces';
 
 const playerStore = usePlayerStore();
 
-defineProps<{letters: string[], disabled: boolean}>();
+const props = defineProps<{letters: string[], disabled: boolean}>();
 const emit = defineEmits(['lettersReplaced'])
 
 const pickLetter = (letter: string, index: number) => {
@@ -33,12 +33,17 @@ const replace = () => {
     emit('lettersReplaced');
 }
 
+const lettersForDock = computed(() => {
+    return props.letters.map(letter => letter === null ? '' : letter);
+});
+
 </script>
 <template>
     <div class="my-letters">
-        <Draggable :modelValue="letters" @update:modelValue="(list) => updated(list)" item-key="letter" group="group-a">
+        <Draggable :modelValue="lettersForDock" @update:modelValue="(list) => updated(list)" item-key="letter" group="group-a">
             <template #item="{element, index}">
                 <Letter
+                    v-if="element"
                     :letter="element"
                     @click="() => pickLetter(element, index)"
                     :disabled="disabled"

@@ -1,4 +1,4 @@
-import { Row, Column, BonusField, LetterType } from '../types/interfaces';
+import { BonusField, Column, LetterType, Row } from '../types/interfaces';
 
 export const rows: Row[] = [
     { name: 'A'},
@@ -38,13 +38,77 @@ export const columns: Column[] = [
 
 export const bonusFields: BonusField[] = [
     { column: 0, row: 0, bonus: { times: 3, type: 'word' }, color: 'red', label: 'potrójna premia słowna' },
+    { column: 14, row: 0, bonus: { times: 3, type: 'word' }, color: 'red', label: 'potrójna premia słowna' },
+    { column: 0, row: 14, bonus: { times: 3, type: 'word' }, color: 'red', label: 'potrójna premia słowna' },
+    { column: 14, row: 14, bonus: { times: 3, type: 'word' }, color: 'red', label: 'potrójna premia słowna' },
+    { column: 7, row: 0, bonus: { times: 3, type: 'word' }, color: 'red', label: 'potrójna premia słowna' },
+    { column: 0, row: 7, bonus: { times: 3, type: 'word' }, color: 'red', label: 'potrójna premia słowna' },
+    { column: 14, row: 7, bonus: { times: 3, type: 'word' }, color: 'red', label: 'potrójna premia słowna' },
+    { column: 7, row: 14, bonus: { times: 3, type: 'word' }, color: 'red', label: 'potrójna premia słowna' },
+
+
     { column: 1, row: 1, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
     { column: 2, row: 2, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
     { column: 3, row: 3, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
     { column: 4, row: 4, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 1, row: 13, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 2, row: 12, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 3, row: 11, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 4, row: 10, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 13, row: 13, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 12, row: 12, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 11, row: 11, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 10, row: 10, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 13, row: 1, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 12, row: 2, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 11, row: 3, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+    { column: 10, row: 4, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
+
+
     { column: 5, row: 5, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 5, row: 9, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 9, row: 5, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 9, row: 9, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 5, row: 1, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 9, row: 1, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 9, row: 13, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 5, row: 13, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 1, row: 5, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 1, row: 9, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 13, row: 5, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+    { column: 13, row: 9, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
+
+
+    { column: 8, row: 8, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 6, row: 6, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 8, row: 6, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 6, row: 8, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 3, row: 0, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 11, row: 0, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 0, row: 3, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 0, row: 11, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 14, row: 3, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 14, row: 11, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 3, row: 14, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 11, row: 14, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 8, row: 2, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 6, row: 2, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 7, row: 3, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 8, row: 12, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 6, row: 12, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 7, row: 11, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 2, row: 6, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 2, row: 8, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 3, row: 7, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+
+    { column: 12, row: 6, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 12, row: 8, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+    { column: 11, row: 7, bonus: { times: 2, type: 'letter' }, color: 'lightblue', label: 'podwójna premia literowa' },
+
+
+
+
     { column: 7, row: 7, bonus: { times: 2, type: 'word' }, color: 'lightgray', label: '' },
-    { column: 5, row: 0, bonus: { times: 3, type: 'word' }, color: 'red', label: 'potrójna premia słowna' },
 
 
 ]
@@ -144,6 +208,15 @@ export const scrubbleLetters: LetterType[] = [
     { value: 'Ł', points: 3 },
     { value: 'U', points: 3 },
     { value: 'U', points: 3 },
+    { value: 'Ą', points: 5 },
+    { value: 'Ę', points: 5 },
+    { value: 'F', points: 5 },
+    { value: 'Ó', points: 5 },
+    { value: 'Ś', points: 5 },
+    { value: 'Ż', points: 5 },
+    { value: 'Ć', points: 6 },
+    { value: 'Ń', points: 7 },
+    { value: 'Ź', points: 9 },
     { value: ' ', points: 0 },
     { value: ' ', points: 0 },
 ]
