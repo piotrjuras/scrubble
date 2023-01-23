@@ -1,6 +1,6 @@
 import { v1 as uuidv1 } from 'uuid';
 import * as CryptoJS from 'crypto-js';
-import { scrabbleLetters, bonusFields } from '../helpers/board';
+import { scrubbleLetters, bonusFields } from '../helpers/board';
 import { LetterType } from '../types/interfaces';
 
 export const generateUUID = () => {
@@ -21,9 +21,9 @@ export const getRandomNumber = (number: number) => {
 }
 
 export const getLetterPoints = (letter: string) => {
-    const originalLetter = scrabbleLetters.find((originalLetter: LetterType) => originalLetter.value === letter);
+    const originalLetter = scrubbleLetters.find((originalLetter: LetterType) => originalLetter.value === letter);
 
-    return originalLetter || { value: '', points: 0 };
+    return originalLetter;
 };
 
 export const checkBonusField = (column: number, row: number) => {

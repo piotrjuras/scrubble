@@ -30,6 +30,7 @@ const useGameStore = defineStore('gameStore', {
         },
         setNextPlayerMove: function(){
             this.currentPlayerMove++;
+            this.moveIteration++;
             if(this.currentPlayerMove === this.players.length){
                 this.currentPlayerMove = 0;
             }

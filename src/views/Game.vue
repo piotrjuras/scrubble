@@ -54,7 +54,6 @@ const verifyWord = async () => {
     try{
         gameStore.lettersPositions.map(letterPosition => letterPosition.submitted = true);
         gameStore.setNextPlayerMove();
-        gameStore.moveIteration++;
 
         const currentPlayer = Number(playerStore.currentPlayer);
         const myCurrentLetters = myLetters.value;

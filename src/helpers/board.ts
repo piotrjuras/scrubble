@@ -49,7 +49,7 @@ export const bonusFields: BonusField[] = [
 
 export const lettersAmount: number = 7;
 
-export const scrabbleLetters: LetterType[] = [
+export const scrubbleLetters: LetterType[] = [
     { value: 'A', points: 1 },
     { value: 'A', points: 1 },
     { value: 'A', points: 1 },
@@ -146,4 +146,4 @@ export const scrabbleLetters: LetterType[] = [
     { value: ' ', points: 0 },
 ]
 
-export const availableLetters: string[] = scrabbleLetters.map(letter => letter.value);
+export const availableLetters: string[] = scrubbleLetters.map(letter => letter.value);

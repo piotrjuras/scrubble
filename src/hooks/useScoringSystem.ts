@@ -12,7 +12,9 @@ const useScoringSystem = () => {
     const getScore = () => {
         const words: LetterPosition[][] = useDetectWord(lettersPositions.value, gameStore.moveIteration);
 
-        let totalPoints = 0;
+        const isScrubble = lettersPositions.value.filter((letter: LetterPosition) => letter.moveIteration === gameStore.moveIteration).length === 7;
+
+        let totalPoints = isScrubble ? 50 : 0;
 
         words.forEach(word => {
             let pointsForWord = 0;
@@ -43,6 +45,8 @@ const useScoringSystem = () => {
             pointsForWord = pointsForWord * wordBonus;
             totalPoints += pointsForWord;
         })
+
+        if (gameStore.moveIteration === 0) return totalPoints * 2;
 
         return totalPoints;
     }
