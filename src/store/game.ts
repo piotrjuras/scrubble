@@ -11,9 +11,9 @@ const useGameStore = defineStore('gameStore', {
         validateWords: false as boolean
     }),
     actions: {
-        setLettersPositions: function(value: any[]){
-            this.lettersPositions = value;
-        },
+        // setLettersPositions: function(value: any[]){
+        //     this.lettersPositions = value;
+        // },
         addLetterPosition: function(letter: any){
             this.lettersPositions.push(letter);
         },

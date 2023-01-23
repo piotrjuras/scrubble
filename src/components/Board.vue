@@ -26,11 +26,7 @@ const columns: Column[] = importedColumns;
 const rows: Row[] = importedRows;
 
 defineProps<{loading: boolean}>();
-const emit = defineEmits(['verifySubmit']);
-
-const submitMove = () => {
-    emit('verifySubmit');
-}
+const emit = defineEmits(['verifySubmit', 'replaceLetters']);
 
 </script>
 <template>
@@ -50,10 +46,10 @@ const submitMove = () => {
                 </div>
             </div>
         </div>
-        <button v-if="playerStore.isMyMove" :disabled="loading" @click="() => submitMove()">submit</button>
+        <button v-if="playerStore.isMyMove" :disabled="loading" @click="() => emit('verifySubmit')">submit</button>
         <h3 v-if="playerStore.isMyMove">Twój ruch</h3>
         <h3 v-else>ruch ma: {{ players[currentPlayerMove].playerName }}</h3>
-        <MyLetters :letters="myLetters" :disabled="loading" />
+        <MyLetters :letters="myLetters" @lettersReplaced="() => emit('replaceLetters')" :disabled="loading" />
     </div>
 </template>
 <style lang="scss" scoped>

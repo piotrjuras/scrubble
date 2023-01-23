@@ -9,7 +9,7 @@ export interface LetterPosition{
 };
 
 export interface PickedLetter{
-    value: string | null;
+    letter: string | null;
     index: number | null;
 }
 

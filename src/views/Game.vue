@@ -112,8 +112,19 @@ const verifyWord = async () => {
     } catch(error){
         window.alert(`error: ${error}`)
     }
-    loading.value = false; 
+    loading.value = false;
 
+}
+
+const replaceLetters = async () => {
+    loading.value = true;
+
+    gameStore.setNextPlayerMove();
+
+    await GameService.updateGame(gamePublicId.value, gameStore.$state);
+    await fetchData();
+
+    loading.value = false;
 }
 
 </script>
@@ -123,6 +134,7 @@ const verifyWord = async () => {
         <Menu />
         <Board
             @verifySubmit="() => verifyWord()"
+            @replaceLetters="() => replaceLetters()"
             :loading="loading"
         />
     </template>

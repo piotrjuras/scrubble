@@ -15,12 +15,12 @@ const useHandleLetters = () => {
 
     const addLetter = (column: number , row: number, letterObject: PickedLetter) => {
 
-        const { value, index } = letterObject;
+        const { letter, index } = letterObject;
         const moveIteration = gameStore.moveIteration;
         const commitedBy = gameStore.currentPlayerMove;
 
-        if(value && index !== null){
-            gameStore.addLetterPosition({ letter: value, column, row, submitted: false, moveIteration, commitedBy });
+        if(letter && index !== null){
+            gameStore.addLetterPosition({ letter, column, row, submitted: false, moveIteration, commitedBy });
             myLetters.value.splice(index, 1);
         
             playerStore.removePickedLetter();
@@ -48,7 +48,7 @@ const useHandleLetters = () => {
         const fieldOccupied = checkField(column, row);
         const letter: PickedLetter = pickedLetter.value;
 
-        if(letter.value && !fieldOccupied){
+        if(letter.letter && !fieldOccupied){
             addLetter(column, row, letter);
             return;
         }
