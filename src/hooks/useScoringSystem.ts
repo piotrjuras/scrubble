@@ -46,8 +46,6 @@ const useScoringSystem = () => {
             totalPoints += pointsForWord;
         })
 
-        if (gameStore.moveIteration === 0) return totalPoints * 2;
-
         return totalPoints;
     }
 

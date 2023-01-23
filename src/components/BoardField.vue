@@ -4,9 +4,7 @@ import { checkBonusField } from '../helpers/';
 defineProps<{column: number; row: number}>();
 </script>
 <template>
-    <div class="field"
-        :class="[{center: column === 7 && row === 7}]"
-    >
+    <div class="field">
         <span
             v-if="checkBonusField(column, row)"
             :style="{ background: checkBonusField(column, row).color }"

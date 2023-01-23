@@ -3,10 +3,9 @@ import GameService from "../services/GameService";
 import MyLetters from "./MyLetters.vue";
 import Letter from "./Letter.vue";
 import BoardField from "../components/BoardField.vue";
-import { computed, ref, onMounted, onUnmounted, watch } from "vue";
+import { computed } from "vue";
 import { useGameStore } from '../store/game';
 import { usePlayerStore } from '../store/player';
-import { useAppStore } from '../store/app';
 import { columns as importedColumns, rows as importedRows } from '../helpers/board';
 import { checkBonusField } from '../helpers/';
 import { PickedLetter, Row, Column } from "../types/interfaces";
@@ -16,7 +15,6 @@ import { useHandleLetters } from '../hooks/useHandleLetters';
 
 const gameStore = useGameStore();
 const playerStore = usePlayerStore();
-const appStore = useAppStore();
 
 const { fieldClicked, checkField } = useHandleLetters();
 
@@ -27,55 +25,12 @@ const currentPlayerMove = computed(() => gameStore.currentPlayerMove);
 const columns: Column[] = importedColumns;
 const rows: Row[] = importedRows;
 
-const props = defineProps<{gamePublicId: string}>();
+defineProps<{loading: boolean}>();
 const emit = defineEmits(['verifySubmit']);
 
 const submitMove = () => {
     emit('verifySubmit');
 }
-
-const fetchData = async (record: boolean) => {
-
-    try{
-        const response = await GameService.fetchGame(props.gamePublicId);
-
-        if(record && playerStore.currentPlayer !== null){
-            gameStore.$state = response;
-
-            if(!appStore.myLettersRefreshed){
-                playerStore.setMyLetters(response.players[playerStore.currentPlayer].letters);
-                appStore.setMyLettersRefreshed(true);
-            }
-        }
-        else{
-            gameStore.setCurrentPlayerMove(response.currentPlayerMove);
-        }
-    } catch(error){
-        window.alert(`error: ${error}`)
-    }
-};
-
-const interval = ref<any>(null);
-
-watch(() => appStore.selectedRefreshInterval, () => {
-    clearInterval(interval.value);
-
-    interval.value = setInterval(() => refetchData(), appStore.selectedRefreshInterval );
-})
-
-const refetchData = () => {
-    if(!playerStore.isMyMove){
-        fetchData(true);
-    }
-    else{
-        fetchData(false);
-    }
-}
-
-onMounted(() => {
-    interval.value = setInterval(() => refetchData(), appStore.selectedRefreshInterval );
-})
-onUnmounted(() => clearInterval(interval.value));
 
 </script>
 <template>
@@ -95,10 +50,10 @@ onUnmounted(() => clearInterval(interval.value));
                 </div>
             </div>
         </div>
-        <button @click="() => submitMove()">submit</button>
+        <button v-if="playerStore.isMyMove" @click="() => submitMove()">submit</button>
         <h3 v-if="playerStore.isMyMove">Twój ruch</h3>
         <h3 v-else>ruch ma: {{ players[currentPlayerMove].playerName }}</h3>
-        <MyLetters :letters="myLetters" />
+        <MyLetters :letters="myLetters" :disabled="loading" />
     </div>
 </template>
 <style lang="scss" scoped>

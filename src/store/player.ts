@@ -9,7 +9,7 @@ const usePlayerStore = defineStore('playerStore', {
         pickedLetter: { value: null, index: null } as PickedLetter
     }),
     actions: {
-        setPickedLetter: function(value: any){
+        setPickedLetter: function(value: PickedLetter){
             this.pickedLetter = value;
         },
         removePickedLetter: function(){

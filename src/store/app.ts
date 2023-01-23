@@ -3,14 +3,10 @@ import { defineStore } from 'pinia';
 
 const useAppStore = defineStore('appStore', {
     state: () => ({
-        myLettersRefreshed: false as boolean,
         refreshInterval: 1000 as number,
         menuVisible: false as boolean
     }),
     actions: {
-        setMyLettersRefreshed: function(value: boolean){
-            this.myLettersRefreshed = value;
-        },
         setRefreshInterval: function(miliseconds: number){
             this.refreshInterval = miliseconds;
         },

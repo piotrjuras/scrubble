@@ -5,7 +5,7 @@ import Draggable from 'vuedraggable';
 
 const playerStore = usePlayerStore();
 
-defineProps<{letters: string[]}>();
+defineProps<{letters: string[], disabled: boolean}>();
 
 const pickLetter = (letter: string, index: number) => {
     if(playerStore.isMyMove)
@@ -24,6 +24,7 @@ const updated = (modifiedList: string[]) => {
                 <Letter
                     :letter="element"
                     @click="() => pickLetter(element, index)"
+                    :disabled="disabled"
                 />
             </template>
         </Draggable>
