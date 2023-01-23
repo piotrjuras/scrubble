@@ -7,7 +7,8 @@ const useGameStore = defineStore('gameStore', {
         players: [] as Player[],
         currentPlayerMove: 0 as number,
         availableLetters: [] as string[],
-        moveIteration: 0 as number
+        moveIteration: 0 as number,
+        validateWords: false as boolean
     }),
     actions: {
         setLettersPositions: function(value: any[]){

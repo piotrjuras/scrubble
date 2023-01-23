@@ -44,6 +44,8 @@ export const bonusFields: BonusField[] = [
     { column: 4, row: 4, bonus: { times: 2, type: 'word' }, color: 'orange', label: 'podwójna premia słowna' },
     { column: 5, row: 5, bonus: { times: 3, type: 'letter' }, color: 'blue', label: 'potrójna premia literowa' },
     { column: 7, row: 7, bonus: { times: 2, type: 'word' }, color: 'lightgray', label: '' },
+    { column: 5, row: 0, bonus: { times: 3, type: 'word' }, color: 'red', label: 'potrójna premia słowna' },
+    { column: 3, row: 0, bonus: { times: 2, type: 'letter' }, color: 'orange', label: 'podwójna premia słowna' },
 
 
 ]

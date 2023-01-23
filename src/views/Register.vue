@@ -30,7 +30,8 @@ const registerGame = async () => {
 
         gamePublicId.value = publicId;
     } catch(error){
-
+        window.alert('coś poszło nie tak :(')
+        window.location.reload();
     }
 }
 
@@ -46,6 +47,10 @@ const addPlayer = () => {
         <div v-for="(player, playerIndex) in gameStore.$state.players" :key="playerIndex">
             {{ player.playerId }}
             <input v-model="player.playerName" />
+        </div>
+        <div>
+            <label for="validate">sprawdzaj słowa 2 i 3-literowe</label>
+            <input type="checkbox" name="validate" v-model="gameStore.validateWords" />
         </div>
         <button @click="() => addPlayer()">dodaj gracza</button>
         <button @click="() => registerGame()">utwórz grę</button>

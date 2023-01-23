@@ -19,7 +19,7 @@ const router = useRouter();
 const route = useRoute();
 
 const getAvaiableLetters = useAvailableLetters();
-const { getScore } = useScoringSystem();
+const { getScore, checkWords } = useScoringSystem();
 
 const gamePublicId = computed(() => String(route.params.gamePublicId));
 const playerName = computed(() => String(route.params.username));
@@ -36,10 +36,11 @@ const fetchData = async () => {
         gameStore.$state = response;
 
         playerStore.registerCurrentPlayer(playerName.value);
-        playerStore.setMyLetters(response.players[playerStore.currentPlayer].letters);
 
         if(playerStore.currentPlayer === null)
             router.push({ name: 'spectator' });
+        else
+            playerStore.setMyLetters(response.players[playerStore.currentPlayer].letters);
 
     } catch(error){
         window.alert(`error: ${error}`)
@@ -82,6 +83,18 @@ const verifyWord = async () => {
 
     loading.value = true; 
     try{
+        if(gameStore.validateWords){
+            const { wrongWords, words } = checkWords();
+
+            if(wrongWords.length){
+                const response = await fetchData();
+
+                gameStore.setNextPlayerMove();
+                await GameService.updateGame(gamePublicId.value, gameStore.$state);
+                
+                throw(`słowo/a: ${wrongWords.join(', ')} nie istnieją`);
+            }
+        }
         const scoredPoints = getScore();
         
         gameStore.lettersPositions.map(letterPosition => letterPosition.submitted = true);

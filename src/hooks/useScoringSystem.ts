@@ -3,6 +3,7 @@ import { useGameStore } from '../store/game';
 import { useDetectWord } from '../hooks/useDetectWord';
 import { checkBonusField, getLetterPoints } from '../helpers';
 import { LetterPosition, BonusField } from '../types/interfaces';
+import { approvedWords } from '../helpers/dictionary';
 
 const useScoringSystem = () => {
 
@@ -18,7 +19,7 @@ const useScoringSystem = () => {
 
         words.forEach(word => {
             let pointsForWord = 0;
-            let wordBonus = 1;
+            let wordBonus = 0;
 
             word.forEach(letterObject => {
                 const isBonus: BonusField = checkBonusField(letterObject.column, letterObject.row);
@@ -33,7 +34,7 @@ const useScoringSystem = () => {
                 }
                 if(isBonus && isBonus.bonus.type === 'word'){
                     if(!letterObject.submitted){
-                        wordBonus = isBonus.bonus.times;
+                        wordBonus += isBonus.bonus.times;
                     }
                     pointsForWord += getLetterPoints(letterObject.letter).points;
                 }
@@ -42,15 +43,30 @@ const useScoringSystem = () => {
                 }
             });
 
-            pointsForWord = pointsForWord * wordBonus;
+            pointsForWord = pointsForWord * (wordBonus === 0 ? 1 : wordBonus);
             totalPoints += pointsForWord;
         })
 
         return totalPoints;
     }
 
+    const checkWords = () => {
+        const wordsRaw: LetterPosition[][] = useDetectWord(lettersPositions.value, gameStore.moveIteration);
+        const words = wordsRaw.map(word => word.map(letterObject => letterObject.letter).join(''));
 
-    return { getScore };
+        const wrongWords = [];
+
+        words.forEach(word => {
+            const isCorrect = approvedWords.includes(word);
+
+            if(!isCorrect && (word.length === 2 || word.length === 3)) wrongWords.push(word);
+        })
+
+        return { wrongWords, words };
+    }
+
+
+    return { getScore, checkWords };
 
 }
 

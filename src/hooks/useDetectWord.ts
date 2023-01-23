@@ -7,11 +7,16 @@ export const useDetectWord = (lettersPositions: LetterPosition[], moveIteration:
 
     const lettersThisMove = lettersPositions.filter((letter: LetterPosition) => letter.moveIteration === moveIteration);
 
-    if(lettersThisMove.length < 1)
+    if(lettersThisMove.length === 0)
         return [];
 
+    const rows = lettersThisMove.map(letterObject => letterObject.row).every((value, index, array) => value === array[0]);
+    const columns = lettersThisMove.map(letterObject => letterObject.column).every((value, index, array) => value === array[0]);
 
-    const isPortrait = lettersThisMove[0].row !== lettersThisMove[1]?.row;
+    if(rows === false && columns === false)
+        return [];
+
+    const isPortrait = !rows;
 
     const matchedWordsLandscape: LetterPosition[][] = [];
     const matchedWordsPortrait: LetterPosition[][] = [];
