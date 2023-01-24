@@ -2,6 +2,7 @@
 import Board from '../components/Board.vue';
 import Menu from '../components/Menu.vue';
 import GameService from '../services/GameService';
+import GameEnded from '../components/GameEnded.vue';
 import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
 import { usePlayerStore } from '../store/player';
 import { useRoute, useRouter } from 'vue-router';
@@ -26,7 +27,7 @@ const playerName = computed(() => String(route.params.username));
 
 const myLetters = computed(() => playerStore.myLetters);
 const loading = ref<boolean>(false);
-
+const gameEnded = ref<boolean>(false);
 
 const fetchData = async () => {
 
@@ -34,6 +35,7 @@ const fetchData = async () => {
         const response = await GameService.fetchGame(gamePublicId.value);
 
         gameStore.$state = response;
+        gameEnded.value = gameStore.isGameFinished();
 
         playerStore.registerCurrentPlayer(playerName.value);
 
@@ -55,10 +57,11 @@ const fetchData = async () => {
 const reFetchData = async () => {
 
     try{        
-        if(!playerStore.isMyMove){
+        if(!playerStore.isMyMove && !gameEnded.value){
             const response = await GameService.fetchGame(gamePublicId.value);
 
             gameStore.$state = response;
+            gameEnded.value = gameStore.isGameFinished();
         }
 
     } catch(error) {
@@ -137,6 +140,7 @@ const replaceLetters = async () => {
             @replaceLetters="() => replaceLetters()"
             :loading="loading"
         />
+        <GameEnded v-if="gameEnded" />
     </template>
     <template v-else>
         Ładuję... 

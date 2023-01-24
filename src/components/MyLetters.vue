@@ -8,7 +8,9 @@ import { PickedLetter } from '../types/interfaces';
 const playerStore = usePlayerStore();
 
 const props = defineProps<{letters: string[], disabled: boolean}>();
-const emit = defineEmits(['lettersReplaced'])
+const emit = defineEmits(['lettersReplaced', 'replacingLetters'])
+
+const lettersForReplace = ref<string[]>([]);
 
 const pickLetter = (letter: string, index: number) => {
     if(playerStore.isMyMove)
@@ -19,28 +21,28 @@ const updated = (modifiedList: string[]) => {
     playerStore.setMyLetters(modifiedList);
 }
 
-
-const lettersForReplace = ref<PickedLetter[]>([]);
-
-const updateLettersForReplace = (list) => {
+const updateLettersForReplace = (list: string[]) => {
     lettersForReplace.value = [...list];
+
+    emit('replacingLetters', list.length > 0);
 }
 
-const replace = () => {
-    playerStore.replaceLetters(lettersForReplace.value.map(letter => letter.letter));
+const replace = () => {    
+    playerStore.replaceLetters(lettersForReplace.value);
     lettersForReplace.value = [];
 
     emit('lettersReplaced');
 }
 
-const lettersForDock = computed(() => {
-    return props.letters.map(letter => letter === null ? '' : letter);
-});
-
 </script>
 <template>
     <div class="my-letters">
-        <Draggable :modelValue="lettersForDock" @update:modelValue="(list) => updated(list)" item-key="letter" group="group-a">
+        <Draggable
+            :modelValue="letters"
+            @update:modelValue="(list) => updated(list)"
+            item-key="letter"
+            group="group-a"
+        >
             <template #item="{element, index}">
                 <Letter
                     v-if="element"
@@ -50,10 +52,15 @@ const lettersForDock = computed(() => {
                 />
             </template>
         </Draggable>
-        <div v-if="playerStore.isMyMove">
-            <button @click="() => replace()">wymień</button>
+        <div>
+            <button @click="() => replace()" :disabled="!playerStore.isMyMove">wymień</button>
         </div>
-        <Draggable v-if="playerStore.isMyMove" :modelValue="lettersForReplace" @update:modelValue="(letter) => updateLettersForReplace(letter)" item-key="letter" group="group-a">
+        <Draggable
+            :modelValue="lettersForReplace"
+            @update:modelValue="(letter) => updateLettersForReplace(letter)"
+            item-key="letter"
+            :group="playerStore.isMyMove ? 'group-a' : ''"
+        >
             <template #item="{element, index}">
                 <Letter
                     :letter="element"

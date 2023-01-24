@@ -6,13 +6,18 @@ const useAvailableLetters = () => {
     const gameStore = useGameStore();
 
     const getAvaiableLetters = (amount: number) => {
-        return Array(amount).fill('').map(() => {
+        const randomLetters = [];
+
+        Array(amount).fill('').map(() => {
             const randomIndex = Math.floor(Math.random() * gameStore.availableLetters.length)
             const pickLetter = gameStore.availableLetters[randomIndex];
+
             gameStore.availableLetters.splice(randomIndex, 1);
 
-            return pickLetter;
+            if(pickLetter) randomLetters.push(pickLetter);
         })
+
+        return randomLetters;
     }
 
 

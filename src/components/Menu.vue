@@ -2,10 +2,32 @@
 import { useAppStore } from "../store/app";
 import { useGameStore } from "../store/game";
 
-import { networkMode } from '../store/app';
 
 const appStore = useAppStore();
 const gameStore = useGameStore();
+
+const networkPerformance = (interval: number) => {
+    switch (interval) {
+        case 500:
+            return 'bardzo dobre'
+            break;
+
+        case 1000:
+            return 'dobre'
+            break;
+
+        case 1500:
+            return 'słabe'
+            break;
+
+        case 2000:
+            return 'bardzo słabe'
+            break;
+    
+        default:
+            break;
+    }
+}
 
 </script>
 <template>
@@ -19,14 +41,7 @@ const gameStore = useGameStore();
                     {{ player.playerName }}: {{ player.score }}
                 </li>
             </ul>
-            <button
-                v-for="(interval, index) in networkMode"
-                :key="index"
-                @click="() => appStore.setRefreshInterval(interval)"
-                :class="{ selected: appStore.selectedRefreshInterval === interval }"
-            >
-                odświezanie: {{ interval/1000 }}s
-            </button>
+            <p>połączenie: {{ networkPerformance(appStore.refreshInterval) }}</p>
         </nav>
     </div>
 </template>

@@ -3,7 +3,7 @@ import GameService from "../services/GameService";
 import MyLetters from "./MyLetters.vue";
 import Letter from "./Letter.vue";
 import BoardField from "../components/BoardField.vue";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useGameStore } from '../store/game';
 import { usePlayerStore } from '../store/player';
 import { columns as importedColumns, rows as importedRows } from '../helpers/board';
@@ -18,15 +18,18 @@ const playerStore = usePlayerStore();
 
 const { fieldClicked, checkField } = useHandleLetters();
 
+const props = defineProps<{loading: boolean}>();
+const emit = defineEmits(['verifySubmit', 'replaceLetters']);
+
 const players = computed(() => gameStore.players);
 const myLetters = computed(() => playerStore.myLetters);
 const currentPlayerMove = computed(() => gameStore.currentPlayerMove);
+const submitButtonDisabled = computed(() => props.loading || !playerStore.isMyMove || replacingLetters.value);
 
+const replacingLetters = ref<boolean>(false);
 const columns: Column[] = importedColumns;
 const rows: Row[] = importedRows;
 
-defineProps<{loading: boolean}>();
-const emit = defineEmits(['verifySubmit', 'replaceLetters']);
 
 </script>
 <template>
@@ -46,10 +49,15 @@ const emit = defineEmits(['verifySubmit', 'replaceLetters']);
                 </div>
             </div>
         </div>
-        <button v-if="playerStore.isMyMove" :disabled="loading" @click="() => emit('verifySubmit')">submit</button>
+        <button :disabled="submitButtonDisabled" @click="() => emit('verifySubmit')">submit</button>
         <h3 v-if="playerStore.isMyMove">Twój ruch</h3>
         <h3 v-else>ruch ma: {{ players[currentPlayerMove].playerName }}</h3>
-        <MyLetters :letters="myLetters" @lettersReplaced="() => emit('replaceLetters')" :disabled="loading" />
+        <MyLetters
+            :letters="myLetters"
+            :disabled="loading"
+            @lettersReplaced="() => emit('replaceLetters')"
+            @replacingLetters="(state) => replacingLetters = state"
+        />
     </div>
 </template>
 <style lang="scss" scoped>

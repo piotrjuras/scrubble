@@ -3,15 +3,26 @@ import { defineStore } from 'pinia';
 
 const useAppStore = defineStore('appStore', {
     state: () => ({
-        refreshInterval: 1000 as number,
-        menuVisible: false as boolean
+        menuVisible: false as boolean,
+        refreshInterval: 500 as number
     }),
     actions: {
-        setRefreshInterval: function(miliseconds: number){
-            this.refreshInterval = miliseconds;
-        },
         setMenuVisible: function(value: boolean){
             this.menuVisible = value;
+        },
+        handleNetworkPerformance: function(miliseconds: number){            
+            if(miliseconds < 200){
+                this.refreshInterval = 500;
+            }
+            if(miliseconds >= 200 && miliseconds <= 500){
+                this.refreshInterval = 1000;
+            }
+            if(miliseconds > 500 && miliseconds <= 1000){
+                this.refreshInterval = 1500;
+            }
+            if(miliseconds > 1000){
+                this.refreshInterval = 2000;
+            }
         }
     },
     getters:{
@@ -20,18 +31,5 @@ const useAppStore = defineStore('appStore', {
         }
     }
 })
-
-interface NetWorkMode{
-    normal: number;
-    optimized: number;
-    low: number;
-}
-
-export const networkMode = {
-    performance: 500,
-    normal: 1000,
-    optimized: 1500,
-    low: 2500
-}
 
 export { useAppStore };

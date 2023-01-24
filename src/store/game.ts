@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { getLetterPoints } from '../helpers';
 import { LetterPosition, Player } from '../types/interfaces';
 
 const useGameStore = defineStore('gameStore', {
@@ -11,9 +12,6 @@ const useGameStore = defineStore('gameStore', {
         validateWords: false as boolean
     }),
     actions: {
-        // setLettersPositions: function(value: any[]){
-        //     this.lettersPositions = value;
-        // },
         addLetterPosition: function(letter: any){
             this.lettersPositions.push(letter);
         },
@@ -38,6 +36,23 @@ const useGameStore = defineStore('gameStore', {
         },
         setAvailableLetters: function(value: string[]){
             this.availableLetters = value;
+        },
+        isGameFinished: function(){
+            const playerFinished = (this.players.find(player => player.letters.length === 0) && !this.availableLetters.length);
+
+            if(playerFinished){
+                this.players.forEach((player, index) => {
+                    const pointsLeftArr = player.letters.map(letter => getLetterPoints(letter).points);
+    
+                    if(pointsLeftArr.length){
+                        const pointsLeft = pointsLeftArr.reduce((a, b) => a + b);
+    
+                        player.score -= pointsLeft;
+                    }
+                })
+            }
+
+            return playerFinished;
         }
     }
 });
