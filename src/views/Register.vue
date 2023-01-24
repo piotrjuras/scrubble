@@ -9,9 +9,10 @@ const gameStore = useGameStore();
 
 const availableLetters = ref<string[]>(allLetters);
 const gamePublicId = ref<string>('');
+const loading = ref<boolean>(false);
 
 const registerGame = async () => {
-
+    loading.value = true;
     gameStore.players.forEach(player => {
         Array(7).fill('').forEach(letter => {
             const randomIndex = getRandomNumber(availableLetters.value.length);
@@ -33,6 +34,7 @@ const registerGame = async () => {
         window.alert('coś poszło nie tak :(')
         window.location.reload();
     }
+    loading.value = false;
 }
 
 const addPlayer = () => {
@@ -50,10 +52,10 @@ const addPlayer = () => {
         </div>
         <div>
             <label for="validate">sprawdzaj słowa 2 i 3-literowe</label>
-            <input type="checkbox" name="validate" v-model="gameStore.validateWords" />
+            <input type="checkbox" name="validate" v-model="gameStore.validateWords" :disabled="loading" />
         </div>
-        <button @click="() => addPlayer()">dodaj gracza</button>
-        <button @click="() => registerGame()">utwórz grę</button>
+        <button @click="() => addPlayer()" :disabled="loading">dodaj gracza</button>
+        <button @click="() => registerGame()" :disabled="loading">utwórz grę</button>
     </div>
     <div v-else>
         <router-link :to="{name: 'login', params: { gamePublicId } }">Link do stołu</router-link>

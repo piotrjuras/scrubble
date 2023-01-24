@@ -12,11 +12,13 @@ const route = useRoute();
 const router = useRouter();
 
 const userName = ref<string>('');
+const loading = ref<boolean>(false);
 
 const gamePublicId = computed(() => String(route.params.gamePublicId));
 
 const registerUser = async () => {
 
+    loading.value = true;
     try{
         const response = await GameService.fetchGame(gamePublicId.value);
 
@@ -29,14 +31,15 @@ const registerUser = async () => {
         }
     } catch(error){
     }
+    loading.value = false;
 
 }
 
 </script>
 <template>
     <div>
-        <input type="text" v-model="userName" />
-        <button @click="() => registerUser()">wejdź</button>
-        <button @click="() => router.push({ name: 'spectator' })">chcę dołączyć jako widz</button>
+        <input type="text" v-model="userName" :disabled="loading" />
+        <button @click="() => registerUser()" :disabled="loading">wejdź</button>
+        <button @click="() => router.push({ name: 'spectator' })" :disabled="loading">chcę dołączyć jako widz</button>
     </div>
 </template>
