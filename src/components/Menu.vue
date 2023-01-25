@@ -10,23 +10,24 @@ const lastMove = useLastMove(gameStore.moveIteration - 1);
 
 const networkPerformance = (interval: number) => {
     switch (interval) {
-        case 500:
+        case 1000:
             return 'bardzo dobre'
             break;
 
-        case 1000:
+        case 1500:
             return 'dobre'
             break;
 
-        case 1500:
+        case 2000:
             return 'słabe'
             break;
 
-        case 2000:
+        case 2500:
             return 'bardzo słabe'
             break;
     
         default:
+            return 'brak danych'
             break;
     }
 }
@@ -44,6 +45,7 @@ const networkPerformance = (interval: number) => {
                 </li>
             </ol>
             <p>połączenie: {{ networkPerformance(appStore.refreshInterval) }}</p>
+            <p v-if="gameStore.availableLetters.length === 0">Koniec liter!</p>
             <button @click="() => appStore.lastMoveHighlighted = !appStore.lastMoveHighlighted">Podswietl ostatni ruch</button>
         </nav>
     </div>

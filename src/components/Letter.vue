@@ -38,7 +38,7 @@ button{
     }
 
     &.highlight{
-        border: 5px solid red;
+        background: lightgreen;
     }
 
     span{

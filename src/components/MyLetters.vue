@@ -7,7 +7,7 @@ import { PickedLetter } from '../types/interfaces';
 
 const playerStore = usePlayerStore();
 
-const props = defineProps<{letters: string[], disabled: boolean}>();
+const props = defineProps<{letters: string[], disabled: boolean, replacingAllowed: boolean}>();
 const emit = defineEmits(['lettersReplaced', 'replacingLetters'])
 
 const lettersForReplace = ref<string[]>([]);
@@ -52,23 +52,25 @@ const replace = () => {
                 />
             </template>
         </Draggable>
-        <div>
-            <button @click="() => replace()" :disabled="!playerStore.isMyMove">wymień</button>
-        </div>
-        <Draggable
-            :modelValue="lettersForReplace"
-            @update:modelValue="(letter) => updateLettersForReplace(letter)"
-            item-key="letter"
-            :group="playerStore.isMyMove ? 'group-a' : ''"
-        >
-            <template #item="{element, index}">
-                <Letter
-                    :letter="element"
-                    @click="() => pickLetter(element, index)"
-                    :disabled="disabled"
-                />
-            </template>
-        </Draggable>
+        <template v-if="replacingAllowed">
+            <div>
+                <button @click="() => replace()" :disabled="!playerStore.isMyMove">wymień</button>
+            </div>
+            <Draggable
+                :modelValue="lettersForReplace"
+                @update:modelValue="(letter) => updateLettersForReplace(letter)"
+                item-key="letter"
+                :group="playerStore.isMyMove ? 'group-a' : ''"
+            >
+                <template #item="{element, index}">
+                    <Letter
+                        :letter="element"
+                        @click="() => pickLetter(element, index)"
+                        :disabled="disabled"
+                    />
+                </template>
+            </Draggable>
+        </template>
     </div>
 </template>
 <style lang="scss">

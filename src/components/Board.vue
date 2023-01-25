@@ -68,6 +68,7 @@ const rows: Row[] = importedRows;
         <MyLetters
             :letters="myLetters"
             :disabled="loading"
+            :replacingAllowed="gameStore.availableLetters.length !== 0"
             @lettersReplaced="() => emit('replaceLetters')"
             @replacingLetters="(state) => replacingLetters = state"
         />
