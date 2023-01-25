@@ -15,6 +15,11 @@ export default [
         component: Game
     },
     {
+        name: 'game-settings',
+        path: '/game/:gamePublicId/:username/settings',
+        component: Game
+    },
+    {
         name: 'login',
         path: '/game/:gamePublicId/login',
         component: Login

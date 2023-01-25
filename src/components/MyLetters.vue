@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import Letter from '../components/Letter.vue';
+import Button from '../components/Button.vue';
 import Draggable from 'vuedraggable';
 import { usePlayerStore } from '../store/player';
 import { computed, ref } from 'vue';
@@ -54,7 +55,7 @@ const replace = () => {
         </Draggable>
         <template v-if="replacingAllowed">
             <div>
-                <button @click="() => replace()" :disabled="!playerStore.isMyMove">potwiedź wymianę liter</button>
+                <Button @click="() => replace()" :disabled="!playerStore.isMyMove || !lettersForReplace.length">wymień</Button>
             </div>
             <Draggable
                 :modelValue="lettersForReplace"

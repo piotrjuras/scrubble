@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import AuthLayout from '../layouts/AuthLayout.vue';
+import Button from '../components/Button.vue';
 import GameService from '../services/GameService';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -37,9 +39,23 @@ const registerUser = async () => {
 
 </script>
 <template>
-    <div>
-        <input type="text" v-model="userName" :disabled="loading" />
-        <button @click="() => registerUser()" :disabled="loading">wejdź</button>
-        <button @click="() => router.push({ name: 'spectator' })" :disabled="loading">chcę dołączyć jako widz</button>
-    </div>
+    <AuthLayout>
+        <div class="login-screen">
+            <h1>Podaj nazwę swojego gracza</h1>
+            <p>skopiuj link z paska adresu przeglądardki i podziel się nim z innymi</p>
+            <input type="text" v-model="userName" :disabled="loading" placeholder="Twoja nazwa gracza" />
+            <Button @click="() => registerUser()" :disabled="loading">wejdź</Button>
+            <Button @click="() => router.push({ name: 'spectator' })" :disabled="loading">chcę dołączyć jako widz</Button>
+        </div>
+    </AuthLayout>
 </template>
+<style lang="scss" scoped>
+.login-screen{
+    display: flex;
+    flex-direction: column;
+    input{
+        width: calc(100% - 2px);
+        margin-bottom: 20px;
+    }
+}
+</style>

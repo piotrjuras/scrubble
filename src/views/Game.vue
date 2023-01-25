@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import Board from '../components/Board.vue';
-import Menu from '../components/Menu.vue';
 import GameService from '../services/GameService';
 import GameEnded from '../components/GameEnded.vue';
+import Settings from '../layouts/Settings.vue';
 import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
 import { usePlayerStore } from '../store/player';
 import { useRoute, useRouter } from 'vue-router';
@@ -152,13 +152,16 @@ const replaceLetters = async () => {
 
 <template>
     <template v-if="gameStore.players.length">
-        <Menu />
-        <Board
-            @verifySubmit="() => verifyWord()"
-            @replaceLetters="() => replaceLetters()"
-            :loading="loading"
-        />
-        <GameEnded v-if="gameEnded" />
+        <Settings v-if="route.name === 'game-settings'" />
+        <template v-else>
+            <Board
+                @verifySubmit="() => verifyWord()"
+                @replaceLetters="() => replaceLetters()"
+                :loading="loading"
+                :route="route"
+            />
+            <GameEnded v-if="gameEnded" />
+        </template>
     </template>
     <template v-else>
         Ładuję... 

@@ -6,7 +6,7 @@ defineProps<{letter: string}>();
 </script>
 <template>
     <button>
-        {{ letter }}
+        <div>{{ letter }}</div>
         <span>{{ getLetterPoints(letter).points }}</span>
     </button>
 </template>
@@ -35,6 +35,10 @@ button{
     &[disabled]{
         color: rgb(85, 85, 85);
         cursor: not-allowed;
+    }
+
+    & > div{
+        height: 45px;
     }
 
     &.highlight{

@@ -3,6 +3,7 @@ import GameService from "../services/GameService";
 import MyLetters from "./MyLetters.vue";
 import Letter from "./Letter.vue";
 import BoardField from "../components/BoardField.vue";
+import Button from "../components/Button.vue";
 import { computed, ref } from "vue";
 import { useGameStore } from '../store/game';
 import { usePlayerStore } from '../store/player';
@@ -10,7 +11,7 @@ import { useAppStore } from "../store/app";
 import { columns as importedColumns, rows as importedRows } from '../helpers/board';
 import { checkBonusField } from '../helpers/';
 import { PickedLetter, Row, Column } from "../types/interfaces";
-import { useRoute } from "vue-router";
+import { RouteLocation, useRouter } from "vue-router";
 
 import { useHandleLetters } from '../hooks/useHandleLetters';
 import { useLastMove } from '../hooks/useLastMove';
@@ -19,9 +20,11 @@ const appStore = useAppStore();
 const gameStore = useGameStore();
 const playerStore = usePlayerStore();
 
+const router = useRouter();
+
 const { fieldClicked, checkField } = useHandleLetters();
 
-const props = defineProps<{loading: boolean}>();
+const props = defineProps<{loading: boolean, route: RouteLocation}>();
 const emit = defineEmits(['verifySubmit', 'replaceLetters']);
 
 const players = computed(() => gameStore.players);
@@ -62,10 +65,14 @@ const rows: Row[] = importedRows;
                 </div>
             </div>
         </div>
-        <button :disabled="submitButtonDisabled" @click="() => emit('verifySubmit')">potwierdź ruch</button>
+        <div class="control" v-if="route.name === 'game'">
+            <Button :disabled="submitButtonDisabled" @click="() => emit('verifySubmit')">potwierdź ruch</Button>
+            <Button @click="() => router.push({ name: 'game-settings' })">statystki</Button>
+        </div>
         <h3 v-if="playerStore.isMyMove">Twój ruch</h3>
         <h3 v-else>ruch ma: {{ players[currentPlayerMove].playerName }}</h3>
         <MyLetters
+            v-if="route.name === 'game'"
             :letters="myLetters"
             :disabled="loading"
             :replacingAllowed="gameStore.availableLetters.length !== 0"
@@ -82,6 +89,11 @@ const rows: Row[] = importedRows;
     flex-direction: column;
     min-height: 80vh;
     max-width: 100vw;
+    div.control{
+        *{
+            margin: 0 5px;
+        }
+    }
     div.board{
         display: grid;
         grid-template-columns: repeat(15, 60px);
@@ -107,6 +119,9 @@ const rows: Row[] = importedRows;
                 }
             }
         }
+    }
+    h3{
+        margin-bottom: 0;
     }
 }
 </style>
