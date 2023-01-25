@@ -11,6 +11,7 @@ import { useScoringSystem } from '../hooks/useScoringSystem';
 import { useAvailableLetters } from '../hooks/useAvailableLetters';
 import { useAppStore } from '../store/app';
 import { useHead } from '@vueuse/head';
+import { useToast } from "vue-toastification";
 
 const playerStore = usePlayerStore();
 const gameStore = useGameStore();
@@ -18,6 +19,8 @@ const appStore = useAppStore();
 
 const router = useRouter();
 const route = useRoute();
+
+const toast = useToast();
 
 const getAvaiableLetters = useAvailableLetters();
 const { getScore, checkWords } = useScoringSystem();
@@ -31,7 +34,14 @@ const loading = ref<boolean>(false);
 const gameEnded = ref<boolean>(false);
 
 useHead({
-    title: computed(() => notifyUser.value ? 'TWOJA KOLEJKA' : 'Scrubble')
+    title: computed(() => notifyUser.value ? 'TWOJA KOLEJ!' : 'Scrubble')
+})
+
+watch(() => notifyUser.value, () => {
+    if(notifyUser.value)
+        toast.warning('Twoja kolej!');
+    else
+        setTimeout(() => toast.clear(), 1000)
 })
 
 const fetchData = async () => {
@@ -50,7 +60,7 @@ const fetchData = async () => {
             playerStore.setMyLetters(response.players[playerStore.currentPlayer].letters);
 
     } catch(error){
-        window.alert(`error: ${error}`)
+        toast.error(error.message);
     }
 
 }
@@ -70,7 +80,7 @@ const reFetchData = async () => {
         }
 
     } catch(error) {
-        window.alert(`error: ${error}`)
+        toast.error(error.message);
     }
 
 };
@@ -117,8 +127,10 @@ const verifyWord = async () => {
 
         await GameService.updateGame(gamePublicId.value, gameStore.$state);
         await fetchData();
+
+        toast.info('Ruch zakończony pomyślnie');
     } catch(error){
-        window.alert(`error: ${error}`)
+        toast.error(error.message);
     }
     loading.value = false;
 
@@ -131,6 +143,7 @@ const replaceLetters = async () => {
 
     await GameService.updateGame(gamePublicId.value, gameStore.$state);
     await fetchData();
+    toast.info('Litery wymienione pomyślnie!');
 
     loading.value = false;
 }
@@ -139,7 +152,6 @@ const replaceLetters = async () => {
 
 <template>
     <template v-if="gameStore.players.length">
-        <h1 v-if="notifyUser">YOUR TURN!</h1>
         <Menu />
         <Board
             @verifySubmit="() => verifyWord()"

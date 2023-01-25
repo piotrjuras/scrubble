@@ -62,7 +62,7 @@ const rows: Row[] = importedRows;
                 </div>
             </div>
         </div>
-        <button :disabled="submitButtonDisabled" @click="() => emit('verifySubmit')">submit</button>
+        <button :disabled="submitButtonDisabled" @click="() => emit('verifySubmit')">potwierdź ruch</button>
         <h3 v-if="playerStore.isMyMove">Twój ruch</h3>
         <h3 v-else>ruch ma: {{ players[currentPlayerMove].playerName }}</h3>
         <MyLetters

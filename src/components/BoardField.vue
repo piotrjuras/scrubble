@@ -18,21 +18,23 @@ defineProps<{column: number; row: number}>();
 .field{
     width: 60px;
     height: 60px;
-    border: 1px solid black;
+    border: 1px solid gray;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
+
 
     span{
         position: absolute;
         text-align: center;
         font-size: 0.8rem;
-        width: calc(100% - 10px);
-        height: calc(100% - 10px);
-        padding: 5px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        width: calc(100% - 2px);
+        height: calc(100% - 2px);;
+        padding: 12px 10px;
+        box-sizing: border-box;
+        top: 1px;
+        left: 1px;
     }
 
     &.center{

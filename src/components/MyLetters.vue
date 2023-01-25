@@ -54,13 +54,14 @@ const replace = () => {
         </Draggable>
         <template v-if="replacingAllowed">
             <div>
-                <button @click="() => replace()" :disabled="!playerStore.isMyMove">wymień</button>
+                <button @click="() => replace()" :disabled="!playerStore.isMyMove">potwiedź wymianę liter</button>
             </div>
             <Draggable
                 :modelValue="lettersForReplace"
                 @update:modelValue="(letter) => updateLettersForReplace(letter)"
                 item-key="letter"
                 :group="playerStore.isMyMove ? 'group-a' : ''"
+                class="replace-letters-container"
             >
                 <template #item="{element, index}">
                     <Letter
@@ -84,9 +85,25 @@ div.my-letters{
     }
 
     & > div{
-        padding: 0 10px 10px 10px;
+        padding: 10px 0;
         border-bottom: 4px solid black;
         min-width: 60px;
+    }
+
+    .replace-letters-container{
+        border: 1px solid black;
+        border-bottom: 4px solid black;
+        padding: 10px;
+        position: relative;
+        margin-right: 20px;
+
+        &::before{
+            content: 'Litery do wymiany';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     }
 }
 </style>
