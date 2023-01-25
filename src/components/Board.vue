@@ -6,13 +6,16 @@ import BoardField from "../components/BoardField.vue";
 import { computed, ref } from "vue";
 import { useGameStore } from '../store/game';
 import { usePlayerStore } from '../store/player';
+import { useAppStore } from "../store/app";
 import { columns as importedColumns, rows as importedRows } from '../helpers/board';
 import { checkBonusField } from '../helpers/';
 import { PickedLetter, Row, Column } from "../types/interfaces";
 import { useRoute } from "vue-router";
 
 import { useHandleLetters } from '../hooks/useHandleLetters';
+import { useLastMove } from '../hooks/useLastMove';
 
+const appStore = useAppStore();
 const gameStore = useGameStore();
 const playerStore = usePlayerStore();
 
@@ -25,6 +28,15 @@ const players = computed(() => gameStore.players);
 const myLetters = computed(() => playerStore.myLetters);
 const currentPlayerMove = computed(() => gameStore.currentPlayerMove);
 const submitButtonDisabled = computed(() => props.loading || !playerStore.isMyMove || replacingLetters.value);
+
+
+const highlightField = (column: number, row: number) => {
+    const lastMove = useLastMove(gameStore.moveIteration - 1);
+    if(appStore.lastMoveHighlighted)
+        return lastMove.find(letter => letter.column === column && letter.row === row);
+    else
+        return null;
+}
 
 const replacingLetters = ref<boolean>(false);
 const columns: Column[] = importedColumns;
@@ -41,6 +53,7 @@ const rows: Row[] = importedRows;
                     <span class="name" v-if="columnIndex === 0">{{ row.name }}</span>
                     <BoardField :column="columnIndex" :row="rowIndex">
                         <Letter
+                            :class="{highlight: highlightField(columnIndex, rowIndex)}"
                             v-if="checkField(columnIndex, rowIndex)"
                             :letter="checkField(columnIndex, rowIndex).letter"
                             :disabled="checkField(columnIndex, rowIndex).submitted"

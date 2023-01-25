@@ -22,6 +22,7 @@ button{
     background: rgb(254, 217, 149);
     color: black;
     border-radius: 5px;
+    z-index: 1;
 
     margin: 0;
     padding: 0;
@@ -34,6 +35,10 @@ button{
     &[disabled]{
         color: rgb(85, 85, 85);
         cursor: not-allowed;
+    }
+
+    &.highlight{
+        border: 5px solid red;
     }
 
     span{

@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { useAppStore } from "../store/app";
 import { useGameStore } from "../store/game";
+import { useLastMove } from '../hooks/useLastMove';
 
 
 const appStore = useAppStore();
 const gameStore = useGameStore();
+const lastMove = useLastMove(gameStore.moveIteration - 1);
 
 const networkPerformance = (interval: number) => {
     switch (interval) {
@@ -36,12 +38,13 @@ const networkPerformance = (interval: number) => {
             menu
         </button>
         <nav :class="{visible: appStore.menuVisible}">
-            <ul>
+            <ol>
                 <li v-for="(player, index) in gameStore.players" :key="index">
                     {{ player.playerName }}: {{ player.score }}
                 </li>
-            </ul>
+            </ol>
             <p>połączenie: {{ networkPerformance(appStore.refreshInterval) }}</p>
+            <button @click="() => appStore.lastMoveHighlighted = !appStore.lastMoveHighlighted">Podswietl ostatni ruch</button>
         </nav>
     </div>
 </template>
@@ -51,7 +54,7 @@ div{
         position: absolute;
         top: 10px;
         right: 10px;
-        z-index: 2;
+        z-index: 3;
     }
     & > nav{
         width: 100vw;
@@ -63,7 +66,7 @@ div{
         transform: translateX(100%);
         transition: transform .5s ease-in-out;
         background: var(--white-background);
-        z-index: 1;
+        z-index: 2;
 
         &.visible{
             transform: translateX(0);

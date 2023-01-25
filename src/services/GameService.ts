@@ -41,8 +41,8 @@ export default class GameService{
         const isLocal = import.meta.env.MODE === 'development';
 
         if(isLocal)
-            return { getEndpoint: '/api', postEndpoint: 'http://192.168.0.5:8000/api', isLocal }
+            return { getEndpoint: '/api', postEndpoint: `${import.meta.env.VITE_APP_API_ADDRESS_LOCAL}/api`, isLocal }
         else
-            return { getEndpoint: '/scrubble/api', postEndpoint: 'http://piotr.juras.pl/scrubble/api', isLocal }
+            return { getEndpoint: '/scrubble/api', postEndpoint: `${import.meta.env.VITE_APP_API_ADDRESS_LOCAL}/api`, isLocal }
     }
 }

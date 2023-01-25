@@ -10,7 +10,7 @@ import { useGameStore } from '../store/game';
 import { useScoringSystem } from '../hooks/useScoringSystem';
 import { useAvailableLetters } from '../hooks/useAvailableLetters';
 import { useAppStore } from '../store/app';
-
+import { useHead } from '@vueuse/head';
 
 const playerStore = usePlayerStore();
 const gameStore = useGameStore();
@@ -24,10 +24,15 @@ const { getScore, checkWords } = useScoringSystem();
 
 const gamePublicId = computed(() => String(route.params.gamePublicId));
 const playerName = computed(() => String(route.params.username));
+const notifyUser = computed(() => appStore.userInactive && playerStore.isMyMove);
 
 const myLetters = computed(() => playerStore.myLetters);
 const loading = ref<boolean>(false);
 const gameEnded = ref<boolean>(false);
+
+useHead({
+    title: computed(() => notifyUser.value ? 'TWOJA KOLEJKA' : 'Scrubble')
+})
 
 const fetchData = async () => {
 
@@ -134,6 +139,7 @@ const replaceLetters = async () => {
 
 <template>
     <template v-if="gameStore.players.length">
+        <h1 v-if="notifyUser">YOUR TURN!</h1>
         <Menu />
         <Board
             @verifySubmit="() => verifyWord()"
