@@ -43,6 +43,6 @@ export default class GameService{
         if(isLocal)
             return { getEndpoint: '/api', postEndpoint: `${import.meta.env.VITE_APP_API_ADDRESS_LOCAL}/api`, isLocal }
         else
-            return { getEndpoint: '/scrubble/api', postEndpoint: `${import.meta.env.VITE_APP_API_ADDRESS_LOCAL}/api`, isLocal }
+            return { getEndpoint: '/scrubble/api', postEndpoint: `${import.meta.env.VITE_APP_API_ADDRESS_PRODUCTION}/api`, isLocal }
     }
 }

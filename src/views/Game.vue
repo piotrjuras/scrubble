@@ -110,7 +110,8 @@ const verifyWord = async () => {
                 gameStore.setNextPlayerMove();
                 await GameService.updateGame(gamePublicId.value, gameStore.$state);
                 
-                throw(`słowo/a: ${wrongWords.join(', ')} nie istnieją`);
+                const message = `słow${wrongWords.length > 0 ? 'a' : 'o'}: ${wrongWords.join(', ')}`;
+                throw({ message });
             }
         }
         const scoredPoints = getScore();
@@ -130,7 +131,7 @@ const verifyWord = async () => {
 
         toast.info('Ruch zakończony pomyślnie');
     } catch(error){
-        toast.error(error.message);
+        toast.error(error.message, { timeout: false });
     }
     loading.value = false;
 

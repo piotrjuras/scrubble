@@ -4,7 +4,7 @@ import MyLetters from "./MyLetters.vue";
 import Letter from "./Letter.vue";
 import BoardField from "../components/BoardField.vue";
 import Button from "../components/Button.vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useGameStore } from '../store/game';
 import { usePlayerStore } from '../store/player';
 import { useAppStore } from "../store/app";
@@ -22,7 +22,7 @@ const playerStore = usePlayerStore();
 
 const router = useRouter();
 
-const { fieldClicked, checkField } = useHandleLetters();
+const { fieldClicked, checkField, removeLetter } = useHandleLetters();
 
 const props = defineProps<{loading: boolean, route: RouteLocation}>();
 const emit = defineEmits(['verifySubmit', 'replaceLetters']);
@@ -45,6 +45,10 @@ const replacingLetters = ref<boolean>(false);
 const columns: Column[] = importedColumns;
 const rows: Row[] = importedRows;
 
+watch(() => replacingLetters.value, () => {
+    const currentMove = useLastMove(gameStore.moveIteration);
+    currentMove.forEach(letter => removeLetter(letter.column, letter.row));
+});
 
 </script>
 <template>
@@ -52,7 +56,11 @@ const rows: Row[] = importedRows;
         <div class="board">
             <div class="column" v-for="(column, columnIndex) in columns" :key="columnIndex">
                 <span class="name">{{ column.name }}</span>
-                <div class="row" v-for="(row, rowIndex) in column.rows" :key="rowIndex" @click="() => fieldClicked(columnIndex, rowIndex)">
+                <div class="row"
+                    v-for="(row, rowIndex) in column.rows"
+                    :key="rowIndex"
+                    @click="() => !submitButtonDisabled ? fieldClicked(columnIndex, rowIndex) : null"
+                >
                     <span class="name" v-if="columnIndex === 0">{{ row.name }}</span>
                     <BoardField :column="columnIndex" :row="rowIndex">
                         <Letter

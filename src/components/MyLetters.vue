@@ -64,10 +64,9 @@ const replace = () => {
                 :group="playerStore.isMyMove ? 'group-a' : ''"
                 class="replace-letters-container"
             >
-                <template #item="{element, index}">
+                <template #item="{element}">
                     <Letter
                         :letter="element"
-                        @click="() => pickLetter(element, index)"
                         :disabled="disabled"
                     />
                 </template>
