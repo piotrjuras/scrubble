@@ -3,6 +3,7 @@ import GameService from "../services/GameService";
 import MyLetters from "./MyLetters.vue";
 import Letter from "./Letter.vue";
 import BoardField from "../components/BoardField.vue";
+import Ranking from "../components/Ranking.vue";
 import Button from "../components/Button.vue";
 import { computed, ref, watch } from "vue";
 import { useGameStore } from '../store/game';
@@ -79,6 +80,7 @@ watch(() => replacingLetters.value, () => {
         </div>
         <h3 v-if="playerStore.isMyMove">Twój ruch</h3>
         <h3 v-else>ruch ma: {{ players[currentPlayerMove].playerName }}</h3>
+        <Ranking v-if="appStore.scoringOnBoard" />
         <MyLetters
             v-if="route.name === 'game'"
             :letters="myLetters"

@@ -6,7 +6,8 @@ const useAppStore = defineStore('appStore', {
         menuVisible: false as boolean,
         refreshInterval: 500 as number,
         lastMoveHighlighted: false as boolean,
-        userInactive: false as boolean
+        userInactive: false as boolean,
+        scoringOnBoard: false as boolean
     }),
     actions: {
         setMenuVisible: function(value: boolean){

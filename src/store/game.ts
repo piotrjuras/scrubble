@@ -12,7 +12,7 @@ const useGameStore = defineStore('gameStore', {
         validateWords: false as boolean
     }),
     actions: {
-        addLetterPosition: function(letter: any){
+        addLetterPosition: function(letter: LetterPosition){
             this.lettersPositions.push(letter);
         },
         removeLetterPosition: function(index: number){

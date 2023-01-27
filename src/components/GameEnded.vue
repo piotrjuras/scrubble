@@ -13,7 +13,7 @@ const rankings = computed(() => gameStore.players.sort((a, b) => b.score - a.sco
 
 </script>
 <template>
-    <div v-if="playerWon">
+    <div v-if="playerWon" class="result-screen">
         <h2>gra zakończona</h2>
         <p>wygrał: {{ playerWon.playerName }} i zdobył {{ playerWon.score }} punktów</p>
         <p>punktacja:</p>
@@ -25,7 +25,7 @@ const rankings = computed(() => gameStore.players.sort((a, b) => b.score - a.sco
     </div>
 </template>
 <style lang="scss" scoped>
-div{
+div.result-screen{
     position: fixed;
     padding: 20px;
     top: 50%;

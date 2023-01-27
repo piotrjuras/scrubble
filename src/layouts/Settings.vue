@@ -4,12 +4,15 @@ import { useAppStore } from "../store/app";
 import { useGameStore } from "../store/game";
 import { useLastMove } from '../hooks/useLastMove';
 import { useRouter } from 'vue-router';
+import { computed } from 'vue';
 
 
 const appStore = useAppStore();
 const gameStore = useGameStore();
 const lastMove = useLastMove(gameStore.moveIteration - 1);
 const router = useRouter();
+
+const sortedRanking = computed(() => [...gameStore.players].sort((a, b) => b.score - a.score));
 
 const networkPerformance = (interval: number) => {
     switch (interval) {
@@ -40,6 +43,11 @@ const highlightLastMove = () => {
     router.push({ name: 'game' })
 }
 
+const toggleScoringOnBoard = () => {
+    appStore.scoringOnBoard = !appStore.scoringOnBoard;
+    router.push({ name: 'game' })
+}
+
 </script>
 <template>
     <div>
@@ -47,14 +55,24 @@ const highlightLastMove = () => {
         <nav>
             <p>Ranking:</p>
             <ol>
-                <li v-for="(player, index) in gameStore.players" :key="index">
+                <li v-for="(player, index) in sortedRanking" :key="index">
                     {{ player.playerName }}: {{ player.score }}
+                </li>
+            </ol>
+            <p>Gracze:</p>
+            <ol>
+                <li v-for="(player, index) in gameStore.players" :key="index">
+                    {{ player.playerName }}
                 </li>
             </ol>
             <p :class="`speed-${appStore.refreshInterval}`">połączenie: {{ networkPerformance(appStore.refreshInterval) }}</p>
             <p v-if="gameStore.availableLetters.length === 0">Koniec liter!</p>
             <Button @click="() => highlightLastMove()">
                 {{ appStore.lastMoveHighlighted ? 'Usuń podkreślenie' : 'Podkreślaj ostatni ruch' }}
+            </Button>
+
+            <Button @click="() => toggleScoringOnBoard()">
+                {{ `${appStore.scoringOnBoard ? 'ukrywaj' : 'wyświetlaj'} punkty na ekranie głównym` }}
             </Button>
         </nav>
     </div>
