@@ -29,10 +29,11 @@ const updateLettersForReplace = (list: string[]) => {
 }
 
 const replace = () => {    
-    playerStore.replaceLetters(lettersForReplace.value);
-    lettersForReplace.value = [];
+    const replaced = playerStore.replaceLetters(lettersForReplace.value);
+    if(replaced)
+        lettersForReplace.value = [];
 
-    emit('lettersReplaced');
+    emit('lettersReplaced', replaced);
 }
 
 </script>
@@ -54,7 +55,7 @@ const replace = () => {
             </template>
         </Draggable>
         <template v-if="replacingAllowed">
-            <div>
+            <div class="replace-button">
                 <Button @click="() => replace()" :disabled="!playerStore.isMyMove || !lettersForReplace.length">wymień</Button>
             </div>
             <Draggable
@@ -79,6 +80,7 @@ div.my-letters{
     display: flex;
     margin: 20px 0 20px;
     justify-content: center;
+    border-bottom: 4px solid black;
 
     button{
         margin: 0 5px;
@@ -86,16 +88,20 @@ div.my-letters{
 
     & > div{
         padding: 10px 0;
-        border-bottom: 4px solid black;
         min-width: 60px;
+        display: flex;
+
+        &.replace-button{
+            button{
+                margin: 0 15px;
+            }
+        }
     }
 
     .replace-letters-container{
-        border: 1px solid black;
-        border-bottom: 4px solid black;
-        padding: 10px;
+        padding: 10px 0;
         position: relative;
-        margin-right: 20px;
+        min-width: 150px;
 
         &::before{
             content: 'Litery do wymiany';

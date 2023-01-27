@@ -22,6 +22,9 @@ const usePlayerStore = defineStore('playerStore', {
         },
         replaceLetters: function(letters: string[]){
             const gameStore = useGameStore();
+
+            if(letters.length > gameStore.availableLetters.length) return false;
+            
             const getAvailableLetters = useAvailableLetters();
             const replacedLetters = letters;
             const newLetters = getAvailableLetters(letters.length);
@@ -29,6 +32,8 @@ const usePlayerStore = defineStore('playerStore', {
             gameStore.setPlayerLetters(this.currentPlayer, [...this.myLetters, ...newLetters]);
             this.setMyLetters(gameStore.players[this.currentPlayer].letters);
             gameStore.setAvailableLetters([...gameStore.availableLetters, ...replacedLetters]);
+
+            return true;
         },
         registerCurrentPlayer: function(playerName: string){
 

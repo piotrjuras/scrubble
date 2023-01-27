@@ -86,7 +86,7 @@ watch(() => replacingLetters.value, () => {
             :letters="myLetters"
             :disabled="loading"
             :replacingAllowed="gameStore.availableLetters.length !== 0"
-            @lettersReplaced="() => emit('replaceLetters')"
+            @lettersReplaced="(replaced) => emit('replaceLetters', replaced)"
             @replacingLetters="(state) => replacingLetters = state"
         />
     </div>
@@ -132,6 +132,7 @@ watch(() => replacingLetters.value, () => {
     }
     h3{
         margin-bottom: 0;
+        text-transform: uppercase;
     }
 }
 </style>

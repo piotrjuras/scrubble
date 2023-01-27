@@ -5,12 +5,12 @@ const activity = () => {
 
     const appStore = useAppStore();
 
-    let timeout = setTimeout(() => { appStore.setUserInactive(true) }, 10000 )
+    let timeout = setTimeout(() => { appStore.setUserInactive(true) }, 60000 )
 
     const active = () => {
         if(appStore.userInactive) appStore.setUserInactive(false);
         clearTimeout(timeout);
-        timeout = setTimeout(() => { appStore.setUserInactive(true) }, 10000 );
+        timeout = setTimeout(() => { appStore.setUserInactive(true) }, 60000 );
     }
 
     document.addEventListener('mousemove', active);

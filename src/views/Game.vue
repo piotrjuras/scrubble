@@ -137,7 +137,11 @@ const verifyWord = async () => {
 
 }
 
-const replaceLetters = async () => {
+const replaceLetters = async (valid: boolean) => {
+    if(!valid){
+        toast.error('Nie ma wystarczającej ilości liter w woreczku')
+        return;
+    }
     loading.value = true;
 
     gameStore.setNextPlayerMove();
@@ -157,7 +161,7 @@ const replaceLetters = async () => {
         <template v-else>
             <Board
                 @verifySubmit="() => verifyWord()"
-                @replaceLetters="() => replaceLetters()"
+                @replaceLetters="(valid) => replaceLetters(valid)"
                 :loading="loading"
                 :route="route"
             />

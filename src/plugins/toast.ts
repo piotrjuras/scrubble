@@ -4,7 +4,8 @@ const options: PluginOptions = {
     position: POSITION.TOP_LEFT,
     toastDefaults:{
         [TYPE.ERROR]: {
-            timeout: 2000
+            timeout: 2000,
+            hideProgressBar: true
         },
         [TYPE.SUCCESS]: {
             timeout: 2000,

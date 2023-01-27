@@ -7,11 +7,13 @@ import { useRoute, useRouter } from 'vue-router';
 import { useGameStore } from '../store/game';
 import { usePlayerStore } from '../store/player';
 import { Player } from '../types/interfaces';
+import { useToast } from 'vue-toastification';
 
 const gameStore = useGameStore();
 
 const route = useRoute();
 const router = useRouter();
+const toast = useToast();
 
 const userName = ref<string>('');
 const loading = ref<boolean>(false);
@@ -28,8 +30,10 @@ const registerUser = async () => {
 
         if(validatePlayer){
             router.push({ name: 'game', params: { gamePublicId: gamePublicId.value, username: userName.value }});
+            toast.success('Dołączono do gry');
         } else {
             router.push({ name: 'error' });
+            toast.error('Nie ma zarejestrowanego takiego gracza');
         }
     } catch(error){
     }
