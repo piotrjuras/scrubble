@@ -79,8 +79,8 @@ watch(() => replacingLetters.value, () => {
             <Button @click="() => router.push({ name: 'game-settings' })">statystki</Button>
         </div>
         <h3 v-if="playerStore.isMyMove">Twój ruch</h3>
-        <h3 v-else>ruch ma: {{ players[currentPlayerMove].playerName }}</h3>
-        <Ranking v-if="appStore.scoringOnBoard" />
+        <h3 v-else>Ruch ma: {{ players[currentPlayerMove].playerName }}</h3>
+        <Ranking v-if="appStore.scoringOnBoard"  />
         <MyLetters
             v-if="route.name === 'game'"
             :letters="myLetters"
@@ -93,12 +93,11 @@ watch(() => replacingLetters.value, () => {
 </template>
 <style lang="scss" scoped>
 .wrapper{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    display: grid;
+    justify-items: center;
     min-height: 80vh;
     max-width: 100vw;
+    overflow: auto;
     div.control{
         *{
             margin: 0 5px;
@@ -132,7 +131,6 @@ watch(() => replacingLetters.value, () => {
     }
     h3{
         margin-bottom: 0;
-        text-transform: uppercase;
     }
 }
 </style>

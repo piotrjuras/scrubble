@@ -5,12 +5,14 @@ import { useGameStore } from "../store/game";
 import { useLastMove } from '../hooks/useLastMove';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
+import useScreenWidth, { DeviceEnum } from '../hooks/useScreenWidth';
 
 
 const appStore = useAppStore();
 const gameStore = useGameStore();
 const lastMove = useLastMove(gameStore.moveIteration - 1);
 const router = useRouter();
+const { device } = useScreenWidth();
 
 const sortedRanking = computed(() => [...gameStore.players].sort((a, b) => b.score - a.score));
 
@@ -71,7 +73,7 @@ const toggleScoringOnBoard = () => {
                 {{ appStore.lastMoveHighlighted ? 'Usuń podkreślenie' : 'Podkreślaj ostatni ruch' }}
             </Button>
 
-            <Button @click="() => toggleScoringOnBoard()">
+            <Button @click="() => toggleScoringOnBoard()" v-if="device === DeviceEnum.Desktop">
                 {{ `${appStore.scoringOnBoard ? 'ukrywaj' : 'wyświetlaj'} punkty na ekranie głównym` }}
             </Button>
         </nav>

@@ -16,8 +16,8 @@ defineProps<{column: number; row: number}>();
 </template>
 <style lang="scss" scoped>
 .field{
-    width: 60px;
-    height: 60px;
+    width: 100%;
+    height: 100%;
     border: 1px solid gray;
     display: flex;
     justify-content: center;

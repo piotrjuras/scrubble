@@ -12,6 +12,7 @@ import { useAvailableLetters } from '../hooks/useAvailableLetters';
 import { useAppStore } from '../store/app';
 import { useHead } from '@vueuse/head';
 import { useToast } from "vue-toastification";
+import useScreenWidth, { DeviceEnum } from '../hooks/useScreenWidth';
 
 const playerStore = usePlayerStore();
 const gameStore = useGameStore();
@@ -24,6 +25,7 @@ const toast = useToast();
 
 const getAvaiableLetters = useAvailableLetters();
 const { getScore, checkWords } = useScoringSystem();
+const { device } = useScreenWidth();
 
 const gamePublicId = computed(() => String(route.params.gamePublicId));
 const playerName = computed(() => String(route.params.username));
@@ -42,7 +44,11 @@ watch(() => notifyUser.value, () => {
         toast.warning('Twoja kolej!');
     else
         setTimeout(() => toast.clear(), 1000)
-})
+});
+
+watch(() => device.value, () => {
+    if(device.value !== DeviceEnum.Desktop) appStore.scoringOnBoard = false;
+});
 
 const fetchData = async () => {
 
@@ -70,6 +76,8 @@ const fetchData = async () => {
 })();
 
 const reFetchData = async () => {
+
+    if(loading.value) return;
 
     try{        
         if(!playerStore.isMyMove && !gameEnded.value){
@@ -102,16 +110,24 @@ const verifyWord = async () => {
     loading.value = true; 
     try{
         if(gameStore.validateWords){
-            const { wrongWords, words } = checkWords();
+            const { validatedWords, wrongWords, words, validationError } = checkWords();
 
-            if(wrongWords.length){
-                const response = await fetchData();
+            if(validationError)
+                toast.error('Walidator: Wykryto literę " ". Walidacja nie została wykonana.', { timeout: false });
 
-                gameStore.setNextPlayerMove();
-                await GameService.updateGame(gamePublicId.value, gameStore.$state);
-                
-                const message = `słow${wrongWords.length > 0 ? 'a' : 'o'}: ${wrongWords.join(', ')}`;
-                throw({ message });
+            if(validatedWords.length && !validationError){
+                if(wrongWords.length){
+                    await fetchData();
+
+                    gameStore.setNextPlayerMove();
+                    await GameService.updateGame(gamePublicId.value, gameStore.$state);
+                    
+                    const message = `Walidator: Słow${wrongWords.length === 1 ? 'o' : 'a'}: ${wrongWords.join(', ')} nie istniej${wrongWords.length === 1 ? 'e' : 'ą'}`;
+                    throw({ message });
+                }
+
+                const message = `Walidator: Sł${validatedWords.length === 1 ? 'owa' : 'ów'}: ${validatedWords.join(', ')} istnieją`;
+                toast.success(message);
             }
         }
         const scoredPoints = getScore();
@@ -128,8 +144,6 @@ const verifyWord = async () => {
 
         await GameService.updateGame(gamePublicId.value, gameStore.$state);
         await fetchData();
-
-        toast.info('Ruch zakończony pomyślnie');
     } catch(error){
         toast.error(error.message, { timeout: false });
     }
@@ -148,7 +162,7 @@ const replaceLetters = async (valid: boolean) => {
 
     await GameService.updateGame(gamePublicId.value, gameStore.$state);
     await fetchData();
-    toast.info('Litery wymienione pomyślnie!');
+    toast.info('Litery wymieniono pomyślnie!');
 
     loading.value = false;
 }
