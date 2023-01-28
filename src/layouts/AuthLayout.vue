@@ -13,7 +13,6 @@ div.wrapper{
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     padding: 30px;
     box-sizing: border-box;
     .content{

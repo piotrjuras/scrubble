@@ -95,6 +95,7 @@ watch(() => replacingLetters.value, () => {
 .wrapper{
     display: grid;
     justify-items: center;
+    align-content: center;
     min-height: 80vh;
     max-width: 100vw;
     overflow: auto;
