@@ -16,10 +16,13 @@ import { RouteLocation, useRouter } from "vue-router";
 
 import { useHandleLetters } from '../hooks/useHandleLetters';
 import { useLastMove } from '../hooks/useLastMove';
+import { useScoringSystem } from "../hooks/useScoringSystem";
 
 const appStore = useAppStore();
 const gameStore = useGameStore();
 const playerStore = usePlayerStore();
+
+const { getScore } = useScoringSystem();
 
 const router = useRouter();
 
@@ -76,9 +79,9 @@ watch(() => replacingLetters.value, () => {
         </div>
         <div class="control" v-if="route.name === 'game'">
             <Button :disabled="submitButtonDisabled" @click="() => emit('verifySubmit')">potwierdź ruch</Button>
-            <Button @click="() => router.push({ name: 'game-settings' })">statystki</Button>
+            <Button @click="() => router.push({ name: 'game-settings' })">statystyki</Button>
         </div>
-        <h3 v-if="playerStore.isMyMove">Twój ruch</h3>
+        <h3 v-if="playerStore.isMyMove">Twój ruch, szacowana ilość punktów: {{ getScore() }}</h3>
         <h3 v-else>Ruch ma: {{ players[currentPlayerMove].playerName }}</h3>
         <Ranking v-if="appStore.scoringOnBoard"  />
         <MyLetters

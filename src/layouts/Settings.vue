@@ -67,8 +67,11 @@ const toggleScoringOnBoard = () => {
                     {{ player.playerName }}
                 </li>
             </ol>
-            <p :class="`speed-${appStore.refreshInterval}`">połączenie: {{ networkPerformance(appStore.refreshInterval) }}</p>
-            <p v-if="gameStore.availableLetters.length === 0">Koniec liter!</p>
+            <div class="letter-count">
+                <p v-if="gameStore.availableLetters.length !== 0">Ilość liter: {{ gameStore.availableLetters.length }}</p>
+                <p v-else>Koniec liter!</p>
+            </div>
+            <p :class="[`speed-${appStore.refreshInterval}`, 'network-status']">połączenie: {{ networkPerformance(appStore.refreshInterval) }}</p>
             <Button @click="() => highlightLastMove()">
                 {{ appStore.lastMoveHighlighted ? 'Usuń podkreślenie' : 'Podkreślaj ostatni ruch' }}
             </Button>
@@ -113,16 +116,23 @@ nav{
     font-weight: 400;
     box-sizing: border-box;
 
-    font-size: 3rem;
+    font-size: 2rem;
 
     ol{
         font-size: 2rem;
+    }
+
+    .letter-count{
+        margin-bottom: 20px;
     }
 
     p{
         margin: 0;
         font-weight: 600;
 
+        &.network-status{
+            font-size: 3rem;
+        }
         &.speed{
             &-1000{ color: lightgreen };
             &-1500{ color: green };

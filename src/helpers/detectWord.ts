@@ -1,5 +1,5 @@
 import { LetterPosition } from "../types/interfaces";
-import { useHandleLetters } from './useHandleLetters';
+import { useHandleLetters } from '../hooks/useHandleLetters';
 
 export const useDetectWord = (lettersPositions: LetterPosition[], moveIteration: number) => {
 

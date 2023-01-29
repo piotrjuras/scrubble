@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 import { useGameStore } from '../store/game';
-import { useDetectWord } from '../hooks/useDetectWord';
+import { useDetectWord } from '../helpers/detectWord';
 import { checkBonusField, getLetterPoints } from '../helpers';
 import { LetterPosition, BonusField } from '../types/interfaces';
 import { approvedWords } from '../helpers/dictionary';
