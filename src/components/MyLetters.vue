@@ -54,25 +54,24 @@ const replace = () => {
                 />
             </template>
         </Draggable>
-        <template v-if="replacingAllowed">
-            <div class="replace-button">
-                <Button @click="() => replace()" :disabled="!playerStore.isMyMove || !lettersForReplace.length">wymień</Button>
-            </div>
-            <Draggable
-                :modelValue="lettersForReplace"
-                @update:modelValue="(letter) => updateLettersForReplace(letter)"
-                item-key="letter"
-                :group="playerStore.isMyMove ? 'group-a' : ''"
-                class="replace-letters-container"
-            >
-                <template #item="{element}">
-                    <Letter
-                        :letter="element"
-                        :disabled="disabled"
-                    />
-                </template>
-            </Draggable>
-        </template>
+        <div class="replace-button">
+            <Button @click="() => replace()" :disabled="!playerStore.isMyMove || !lettersForReplace.length">wymień</Button>
+        </div>
+        <Draggable
+            :modelValue="lettersForReplace"
+            @update:modelValue="(letter) => updateLettersForReplace(letter)"
+            item-key="letter"
+            :group="playerStore.isMyMove ? 'group-a' : ''"
+            :class="['replace-letters-container', {'allowed': replacingAllowed}]"
+            :disabled="!replacingAllowed"
+        >
+            <template #item="{element}">
+                <Letter
+                    :letter="element"
+                    :disabled="disabled"
+                />
+            </template>
+        </Draggable>
     </div>
 </template>
 <style lang="scss">
@@ -104,11 +103,14 @@ div.my-letters{
         min-width: 150px;
 
         &::before{
-            content: 'Litery do wymiany';
+            content: 'Brak dostępnych liter';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+        }
+        &.allowed::before{
+            content: 'Litery do wymiany';
         }
     }
 }
