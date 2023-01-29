@@ -52,22 +52,18 @@ const useScoringSystem = () => {
 
     const checkWords = () => {
         const wordsRaw: LetterPosition[][] = useDetectWord(lettersPositions.value, gameStore.moveIteration);
-        const words = wordsRaw.map(word => word.map(letterObject => letterObject.letter).join(''));
+        const words = wordsRaw.map(word => word.map(letterObject => letterObject.simulatedValue || letterObject.letter).join(''));
 
         const wrongWords = [];
-        const validatedWords = [];
 
         words.forEach(word => {
             const isCorrect = approvedWords.includes(word);
             const wordForValidation = word.length === 2 || word.length === 3;
 
             if(!isCorrect && wordForValidation) wrongWords.push(word);
-            if(wordForValidation) validatedWords.push(word);
         });
 
-        const validationError = wrongWords.find(word => (/\s/).test(word)) || null;
-
-        return { validatedWords, wrongWords, words, validationError };
+        return { wrongWords, words };
     }
 
 

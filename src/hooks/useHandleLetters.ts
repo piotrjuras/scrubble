@@ -13,14 +13,14 @@ const useHandleLetters = () => {
     const pickedLetter = computed(() => playerStore.pickedLetter);
 
 
-    const addLetter = (column: number , row: number, letterObject: PickedLetter) => {
+    const addLetter = (column: number , row: number, letterObject: PickedLetter, simulatedValue = null) => {
 
         const { letter, index } = letterObject;
         const moveIteration = gameStore.moveIteration;
         const commitedBy = gameStore.currentPlayerMove;
 
         if(letter && index !== null){
-            gameStore.addLetterPosition({ letter, column, row, submitted: false, moveIteration, commitedBy });
+            gameStore.addLetterPosition({ letter, column, row, simulatedValue, submitted: false, moveIteration, commitedBy });
             myLetters.value.splice(index, 1);
         
             playerStore.removePickedLetter();
@@ -49,7 +49,12 @@ const useHandleLetters = () => {
         const letter: PickedLetter = pickedLetter.value;
 
         if(letter.letter && !fieldOccupied){
-            addLetter(column, row, letter);
+            if(letter.letter === ' '){
+                const simulatedValue = window.prompt('podaj litere').toUpperCase();
+                addLetter(column, row, letter, simulatedValue);
+            }
+            else
+                addLetter(column, row, letter);
             return;
         }
         

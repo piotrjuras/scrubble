@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { getLetterPoints } from '../helpers';
 
-defineProps<{letter: string}>();
+defineProps<{letter: string; simulatedValue?: string}>();
 
 </script>
 <template>
     <button>
-        <div>{{ letter }}</div>
-        <span>{{ getLetterPoints(letter).points }}</span>
+        <div :class="{ 'blank': simulatedValue }">{{ simulatedValue || letter }}</div>
+        <span>{{ simulatedValue ? 0 : getLetterPoints(letter).points }}</span>
     </button>
 </template>
 <style lang="scss" scoped>
@@ -39,6 +39,9 @@ button{
 
     & > div{
         height: 45px;
+        &.blank{
+            opacity: .3;
+        }
     }
 
     &.highlight{

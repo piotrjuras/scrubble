@@ -3,9 +3,9 @@ export interface LetterPosition{
     column: number;
     row: number;
     submitted: boolean;
-
     moveIteration: number;
     commitedBy: number;
+    simulatedValue: string | null;
 };
 
 export interface PickedLetter{

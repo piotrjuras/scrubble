@@ -71,6 +71,7 @@ watch(() => replacingLetters.value, () => {
                             :class="{highlight: highlightField(columnIndex, rowIndex)}"
                             v-if="checkField(columnIndex, rowIndex)"
                             :letter="checkField(columnIndex, rowIndex).letter"
+                            :simulatedValue="checkField(columnIndex, rowIndex).simulatedValue || null"
                             :disabled="checkField(columnIndex, rowIndex).submitted"
                         />
                     </BoardField>

@@ -110,24 +110,16 @@ const verifyWord = async () => {
     loading.value = true; 
     try{
         if(gameStore.validateWords){
-            const { validatedWords, wrongWords, words, validationError } = checkWords();
+            const { wrongWords, words } = checkWords();
 
-            if(validationError)
-                toast.error('Walidator: Wykryto literę " ". Walidacja nie została wykonana.', { timeout: false });
+            if(wrongWords.length){
+                await fetchData();
 
-            if(validatedWords.length && !validationError){
-                if(wrongWords.length){
-                    await fetchData();
-
-                    gameStore.setNextPlayerMove();
-                    await GameService.updateGame(gamePublicId.value, gameStore.$state);
-                    
-                    const message = `Walidator: Słow${wrongWords.length === 1 ? 'o' : 'a'}: ${wrongWords.join(', ')} nie istniej${wrongWords.length === 1 ? 'e' : 'ą'}`;
-                    throw({ message });
-                }
-
-                const message = `Walidator: Sł${validatedWords.length === 1 ? 'owa' : 'ów'}: ${validatedWords.join(', ')} istnieją`;
-                toast.success(message);
+                gameStore.setNextPlayerMove();
+                await GameService.updateGame(gamePublicId.value, gameStore.$state);
+                
+                const message = `${wrongWords.length === 1 ? 'Słowo' : 'Słowa'}: ${wrongWords.join(', ')} nie ${wrongWords.length === 1 ? 'istnieje' : 'istnieją'}`;
+                throw({ message });
             }
         }
         const scoredPoints = getScore();
