@@ -20,8 +20,11 @@ const setInterceptors = () => {
         const end: number = new Date().getTime();
         const milliseconds = end - start;
 
-        if(milliseconds)
+        if (appStore.refreshInterval < milliseconds){
             appStore.handleNetworkPerformance(milliseconds);
+            throw({ message: 'Wykryto spadek jakości sieci' });
+        }
+        appStore.handleNetworkPerformance(milliseconds);
     
         return response;
     }, function (error) {
