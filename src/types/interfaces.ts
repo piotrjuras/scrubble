@@ -43,3 +43,12 @@ export interface BonusField{
     color: string;
     label: string;
 }
+
+export interface GameStoreModel{
+    lettersPositions: LetterPosition[];
+    players: Player[];
+    currentPlayerMove: number;
+    availableLetters: string[];
+    moveIteration: number;
+    validateWords: boolean;
+}

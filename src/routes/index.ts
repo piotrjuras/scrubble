@@ -2,6 +2,7 @@ import Register from '../views/Register.vue';
 import Game from '../views/Game.vue';
 import Login from '../views/Login.vue';
 import ErrorPage from '../views/ErrorPage.vue';
+import { RouteRecordRaw } from 'vue-router';
 
 export default [
     {
@@ -30,8 +31,18 @@ export default [
         component: ErrorPage
     },
     {
+        name: 'error-msg',
+        path: '/error/:message',
+        component: ErrorPage
+    },
+    {
         name: 'spectator',
         path: '/game/:gamePublicId',
         component: Game
     },
-]
+    {
+        name: 'not-found',
+        path: '/:catchAll(.*)',
+        redirect: { name: 'error-msg', params: { message: '404' } }
+    }
+] as RouteRecordRaw[]

@@ -1,15 +1,10 @@
 import axios from 'axios';
 import { encrypt, decrypt } from '../helpers/';
-
-const headers = {
-    'Cache-Control': 'no-cache',
-    'Pragma': 'no-cache',
-    'Expires': '0',
-}
+import { GameStoreModel } from '../types/interfaces';
 
 export default class GameService{
 
-    static async createGame(gamePublicId: string, data: any){
+    static async createGame(gamePublicId: string, data: GameStoreModel){
 
         const form = new FormData();
         form.append('data', String(encrypt(JSON.stringify(data))));
@@ -20,7 +15,7 @@ export default class GameService{
         return await axios.post(`${this.enviroment.postEndpoint}/`, form);
     }
 
-    static async updateGame(gamePublicId: string, data: any){
+    static async updateGame(gamePublicId: string, data: GameStoreModel){
 
         const form = new FormData();
         form.append('data', String(encrypt(JSON.stringify(data))));

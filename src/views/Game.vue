@@ -66,6 +66,7 @@ const fetchData = async () => {
             playerStore.setMyLetters(response.players[playerStore.currentPlayer].letters);
 
     } catch(error){
+        router.push({ name: 'not-found' });
         toast.error(error.message);
     }
 
