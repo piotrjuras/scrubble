@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+import { useRoute } from 'vue-router';
+import sitemap from '../plugins/sitemap';
+
+const route = useRoute();
+
+console.log(sitemap, route.name);
+
 
 </script>
 <template>

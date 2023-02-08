@@ -13,12 +13,33 @@ export default [
     {
         name: 'game',
         path: '/game/:gamePublicId/:username',
-        component: Game
-    },
-    {
-        name: 'game-settings',
-        path: '/game/:gamePublicId/:username/settings',
-        component: Game
+        component: Game,
+        children: [
+            {
+                name: 'game-settings',
+                path: 'settings',
+                component: Game,
+                children: [
+                    {
+                        name: 'game-settings-test',
+                        path: 'test',
+                        component: Game
+                    }
+                ]
+            },
+            {
+                name: 'game-second',
+                path: '2',
+                component: Game,
+                children: [
+                    {
+                        name: 'game-second-test',
+                        path: 'test',
+                        component: Game
+                    }
+                ]
+            }
+        ]
     },
     {
         name: 'login',
