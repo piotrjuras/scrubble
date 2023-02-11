@@ -159,40 +159,6 @@ const replaceLetters = async (valid: boolean) => {
 
     loading.value = false;
 }
-
-import sitemap from '../plugins/sitemap';
-import { scrubbleLetters } from '../helpers/board';
-
-const breadcrumbs = ref<string[]>([]);
-
-const findMatchingRoute = (sitemap) => {
-
-    const lastMatched = route.matched[route.matched.length-1];
-
-    console.log(route.matched);
-
-    const checkChildren = (breadcrumbsItems) => {
-
-        breadcrumbsItems.forEach(breadcrumb => {
-            if(route.matched.find(mathchedRoute => mathchedRoute.name === breadcrumb.routeName)){
-                breadcrumbs.value.push(breadcrumb.label);
-                if(breadcrumb.children)
-                    checkChildren(breadcrumb.children)
-            }
-        });
-    }
-
-    console.log(scrubbleLetters.length)
-
-    checkChildren(sitemap);
-}
-
-
-findMatchingRoute(sitemap)
-
-
-console.log(breadcrumbs.value.join('/'))
-
 </script>
 
 <template>
