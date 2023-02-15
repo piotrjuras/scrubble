@@ -5,7 +5,7 @@ const setInterceptors = () => {
 
     axios.interceptors.request.use(function (config) {
 
-        if(config.method === 'get')
+        if(config.method === 'get' && config.url.includes('.json'))
             config.headers['request-startTime'] = new Date().getTime();
 
         return config;

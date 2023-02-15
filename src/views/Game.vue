@@ -3,6 +3,7 @@ import Board from '../components/Board.vue';
 import GameService from '../services/GameService';
 import GameEnded from '../components/GameEnded.vue';
 import Settings from '../layouts/Settings.vue';
+import Loading from '../components/Loading.vue';
 import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
 import { usePlayerStore } from '../store/player';
 import { useRoute, useRouter } from 'vue-router';
@@ -66,8 +67,7 @@ const fetchData = async () => {
             playerStore.setMyLetters(response.players[playerStore.currentPlayer].letters);
 
     } catch(error){
-        router.push({ name: 'not-found' });
-        toast.error(error.message);
+        router.push({ name: 'error-msg', params: { message: '404' } });
     }
 
 }
@@ -111,7 +111,7 @@ const verifyWord = async () => {
     loading.value = true; 
     try{
         if(gameStore.validateWords){
-            const { wrongWords, words } = checkWords();
+            const { wrongWords, words } = await checkWords();
 
             if(wrongWords.length){
                 await fetchData();
@@ -166,6 +166,7 @@ const replaceLetters = async (valid: boolean) => {
     <template v-if="gameStore.players.length">
         <Settings v-if="route.name === 'game-settings'" />
         <template v-else>
+            <Loading v-if="loading" />
             <Board
                 @verifySubmit="() => verifyWord()"
                 @replaceLetters="(valid) => replaceLetters(valid)"

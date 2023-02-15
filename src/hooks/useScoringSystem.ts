@@ -3,7 +3,7 @@ import { useGameStore } from '../store/game';
 import { useDetectWord } from '../helpers/detectWord';
 import { checkBonusField, getLetterPoints } from '../helpers';
 import { LetterPosition, BonusField } from '../types/interfaces';
-import { approvedWords } from '../helpers/dictionary';
+import GameService from '../services/GameService';
 
 const useScoringSystem = () => {
 
@@ -50,17 +50,15 @@ const useScoringSystem = () => {
         return totalPoints;
     }
 
-    const checkWords = () => {
+    const checkWords = async () => {
         const wordsRaw: LetterPosition[][] = useDetectWord(lettersPositions.value, gameStore.moveIteration);
-        const words = wordsRaw.map(word => word.map(letterObject => letterObject.simulatedValue || letterObject.letter).join(''));
+        const words: string[] = wordsRaw.map(word => word.map(letterObject => letterObject.simulatedValue || letterObject.letter).join(''));
 
-        const wrongWords = [];
+        const wrongWords: string[] = [];
+        const validatedWords: number[] | string[] = await GameService.checkWords(words);
 
-        words.forEach(word => {
-            const isCorrect = approvedWords.includes(word);
-            const wordForValidation = word.length === 2 || word.length === 3;
-
-            if(!isCorrect && wordForValidation) wrongWords.push(word);
+        words.forEach((word, index) => {
+            if(validatedWords[index] === '') wrongWords.push(word);
         });
 
         return { wrongWords, words };

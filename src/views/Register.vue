@@ -75,7 +75,7 @@ watch(() => gameStore.players, () => {
             </div>
             <div class="checkbox">
                 <input type="checkbox" name="validate" v-model="gameStore.validateWords" :disabled="loading" />
-                <label for="validate">sprawdzaj słowa 2 i 3-literowe (beta)</label>
+                <label for="validate">sprawdzaj poprawność wszystkich słów (beta)</label>
             </div>
             <div class="buttons">
                 <Button @click="() => addPlayer()" :disabled="disableAddPlayer">dodaj gracza</Button>
