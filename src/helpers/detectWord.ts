@@ -1,7 +1,7 @@
 import { LetterPosition } from "../types/interfaces";
 import { useHandleLetters } from '../hooks/useHandleLetters';
 
-export const useDetectWord = (lettersPositions: LetterPosition[], moveIteration: number) => {
+export const detectWord = (lettersPositions: LetterPosition[], moveIteration: number) => {
 
     const { checkField } = useHandleLetters();
 

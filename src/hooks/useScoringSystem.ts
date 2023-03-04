@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 import { useGameStore } from '../store/game';
-import { useDetectWord } from '../helpers/detectWord';
+import { detectWord } from '../helpers/detectWord';
 import { checkBonusField, getLetterPoints } from '../helpers';
 import { LetterPosition, BonusField } from '../types/interfaces';
 import GameService from '../services/GameService';
@@ -11,7 +11,7 @@ const useScoringSystem = () => {
     const lettersPositions = computed(() => gameStore.lettersPositions);
 
     const getScore = () => {
-        const words: LetterPosition[][] = useDetectWord(lettersPositions.value, gameStore.moveIteration);
+        const words: LetterPosition[][] = detectWord(lettersPositions.value, gameStore.moveIteration);
 
         const isScrubble = lettersPositions.value.filter((letter: LetterPosition) => letter.moveIteration === gameStore.moveIteration).length === 7;
 
@@ -51,7 +51,7 @@ const useScoringSystem = () => {
     }
 
     const checkWords = async () => {
-        const wordsRaw: LetterPosition[][] = useDetectWord(lettersPositions.value, gameStore.moveIteration);
+        const wordsRaw: LetterPosition[][] = detectWord(lettersPositions.value, gameStore.moveIteration);
         const words: string[] = wordsRaw.map(word => word.map(letterObject => letterObject.simulatedValue || letterObject.letter).join(''));
 
         const wrongWords: string[] = [];
