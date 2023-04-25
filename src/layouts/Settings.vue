@@ -4,7 +4,7 @@ import { useAppStore } from "../store/app";
 import { useGameStore } from "../store/game";
 import { useLastMove } from '../hooks/useLastMove';
 import { useRouter } from 'vue-router';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import useScreenWidth, { DeviceEnum } from '../hooks/useScreenWidth';
 
 
@@ -16,27 +16,24 @@ const { device } = useScreenWidth();
 
 const sortedRanking = computed(() => [...gameStore.players].sort((a, b) => b.score - a.score));
 
+const networkStatus = ref<string>();
+
 const networkPerformance = (interval: number) => {
-    switch (interval) {
-        case 1000:
-            return 'bardzo dobre'
-            break;
-
-        case 1500:
-            return 'dobre'
-            break;
-
-        case 2000:
-            return 'słabe'
-            break;
-
-        case 2500:
-            return 'bardzo słabe'
-            break;
-    
-        default:
-            return 'brak aktywności'
-            break;
+    if(interval <= 1000){
+        networkStatus.value = 'verygood';
+        return 'bardzo dobre';
+    } else if(interval > 1000 && interval <= 1500){
+        networkStatus.value = 'good';
+        return 'dobre';
+    } else if(interval > 1500 && interval <= 2500){
+        networkStatus.value = 'poor';
+        return 'słabe';
+    } else if(interval > 2500 && interval <= 4000){
+        networkStatus.value = 'verypoor';
+        return 'bardzo słabe';
+    } else if(interval > 4000){
+        networkStatus.value = 'noconnection';
+        return 'brak połączenia';
     }
 }
 
@@ -71,7 +68,7 @@ const toggleScoringOnBoard = () => {
                 <p v-if="gameStore.availableLetters.length !== 0">Ilość liter: {{ gameStore.availableLetters.length }}</p>
                 <p v-else>Koniec liter!</p>
             </div>
-            <p :class="[`speed-${appStore.refreshInterval}`, 'network-status']">połączenie: {{ networkPerformance(appStore.refreshInterval) }}</p>
+            <p :class="[`speed-${networkStatus}`, 'network-status']">połączenie: {{ networkPerformance(appStore.refreshInterval) }}</p>
             <Button @click="() => highlightLastMove()">
                 {{ appStore.lastMoveHighlighted ? 'Usuń podkreślenie' : 'Podkreślaj ostatni ruch' }}
             </Button>
@@ -134,10 +131,10 @@ nav{
             font-size: 3rem;
         }
         &.speed{
-            &-1000{ color: lightgreen };
-            &-1500{ color: green };
-            &-2000{ color: darkorange };
-            &-2500{ color: red };
+            &-verygood{ color: lightgreen };
+            &-good{ color: green };
+            &-poor{ color: darkorange };
+            &-verypoor{ color: red };
         }
     }
 

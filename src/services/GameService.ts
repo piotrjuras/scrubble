@@ -34,7 +34,7 @@ export default class GameService{
 
     static async checkWords(words: string[]){
 
-        const requests: Promise<AxiosRequestConfig>[] = words.map(word => axios.get(`http://piotr.juras.pl/scrubble/api/words/`, {
+        const requests: Promise<AxiosRequestConfig>[] = words.map(word => axios.get(`${this.enviroment.postEndpoint}/words/`, {
             params: { word: word.toLowerCase(), wordlength: word.length }
         }));
         const responses = await Promise.all([...requests]);

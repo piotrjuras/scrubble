@@ -31,10 +31,12 @@ const { device } = useScreenWidth();
 const gamePublicId = computed(() => String(route.params.gamePublicId));
 const playerName = computed(() => String(route.params.username));
 const notifyUser = computed(() => appStore.userInactive && playerStore.isMyMove);
-
+const refetchInterval = computed(() => appStore.userInactive ? appStore.refreshInterval*5 : appStore.refreshInterval);
 const myLetters = computed(() => playerStore.myLetters);
+
 const loading = ref<boolean>(false);
 const gameEnded = ref<boolean>(false);
+const initialLoadFinished = ref<boolean>(false);
 
 useHead({
     title: computed(() => notifyUser.value ? 'TWOJA KOLEJ!' : 'Scrubble')
@@ -51,7 +53,7 @@ watch(() => device.value, () => {
     if(device.value !== DeviceEnum.Desktop) appStore.scoringOnBoard = false;
 });
 
-const fetchData = async () => {
+const fetchData = async (initialFetch: boolean = false) => {
 
     try{
         const response = await GameService.fetchGame(gamePublicId.value);
@@ -66,19 +68,24 @@ const fetchData = async () => {
         else
             playerStore.setMyLetters(response.players[playerStore.currentPlayer].letters);
 
+        initialLoadFinished.value = true;
+
     } catch(error){
-        router.push({ name: 'error-msg', params: { message: '404' } });
+        if(initialFetch){
+            toast.error('Wykryto słabą jakość sieci');
+            await fetchData();
+        }
+        else
+            router.push({ name: 'error-msg', params: { message: '404' } });
     }
 
 }
 
-(async () => {
-    await fetchData();
-})();
+fetchData(true);
 
 const reFetchData = async () => {
 
-    if(loading.value) return;
+    if(loading.value || !initialLoadFinished.value) return;
 
     try{        
         if(!playerStore.isMyMove && !gameEnded.value){
@@ -96,13 +103,13 @@ const reFetchData = async () => {
 
 const interval = ref(null);
 
-watch(() => appStore.selectedRefreshInterval, () => {
+watch(() => refetchInterval.value, () => {
     clearInterval(interval.value);
-    interval.value = setInterval(() => reFetchData(), appStore.selectedRefreshInterval );
+    interval.value = setInterval(() => reFetchData(), refetchInterval.value );
 });
 
 onMounted(() => {
-    interval.value = setInterval(() => reFetchData(), appStore.selectedRefreshInterval );
+    interval.value = setInterval(() => reFetchData(), refetchInterval.value );
 })
 onUnmounted(() => clearInterval(interval.value));
 
